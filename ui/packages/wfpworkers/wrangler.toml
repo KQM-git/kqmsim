@@ -1,11 +1,23 @@
-name = "wfpsim"
+name = "kqmsim"
 main = "src/index.ts"
-compatibility_date = "2022-11-06"
+compatibility_date = "2026-08-31"
+
+routes = [
+  { pattern = "sim.kqm.gg", custom_domain = true }
+]
+
+[assets]
+  directory = "../wfp/dist"
+  not_found_handling = "single-page-application"
+  run_worker_first = ["/api/*", "/sh/*"]
+
+[vars]
+  KQMSIM_ASSETS_ENDPOINT = "https://gcsim.app"
 
 [[r2_buckets]]
-  binding = 'WASM_R2'
-  bucket_name = 'wfpsim'
+  binding = 'kqmsim_r2'
+  bucket_name = 'kqmsim'
 
 [[kv_namespaces]]
-  binding = 'WFPSIM_KV'
-  id= 'b9692c3d92c942b5a2cd05c312261b0f'
+  binding = 'kqmsim_kv'
+  id = 'bf233d51805e4ebc83ecf7189f7e6f54'

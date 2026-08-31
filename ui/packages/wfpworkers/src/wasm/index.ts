@@ -15,7 +15,7 @@ export async function handleWasm(
     const key = new URL(request.url).pathname.replace("/api/wasm/", "");
     console.log(`request key ${key}`);
 
-    const object = await WASM_R2.get(key);
+    const object = await kqmsim_r2.get(key);
 
     if (object == null) {
       console.log(`${key} not found in r2`);

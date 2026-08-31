@@ -38,7 +38,7 @@ export async function handleView(
 
     //try grabbing from kv
     try {
-      const compressed: unknown = await WFPSIM_KV.get(key, {
+      const compressed: unknown = await kqmsim_kv.get(key, {
         type: "arrayBuffer",
       });
       if (compressed === null) {

@@ -15,7 +15,7 @@ export async function handleAssets(
       `Response for request url: ${request.url} not present in cache. Fetching and caching request.`
     );
 
-    const resp = await fetch(new Request(ASSETS_ENDPOINT + cacheUrl.pathname), {
+    const resp = await fetch(new Request(KQMSIM_ASSETS_ENDPOINT + cacheUrl.pathname), {
       cf: {
         cacheTtl: 60 * 24 * 60 * 60,
         cacheEverything: true,

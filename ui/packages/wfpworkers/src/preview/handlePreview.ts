@@ -4,6 +4,13 @@ export async function handlePreview(
   request: IRequest,
   event: FetchEvent,
 ): Promise<Response> {
+  if (
+    typeof KQMSIM_PREVIEW_ENDPOINT === 'undefined' ||
+    typeof KQMSIM_AUTH_KEY === 'undefined'
+  ) {
+    return new Response('Preview service is not configured', {status: 503});
+  }
+
   let {params} = request;
   if (!params || !params.key) {
     return new Response(null, {
@@ -34,10 +41,10 @@ export async function handlePreview(
     );
 
     const resp = await fetch(
-      new Request(PREVIEW_ENDPOINT + '/generate/sh/' + key),
+      new Request(KQMSIM_PREVIEW_ENDPOINT + '/generate/sh/' + key),
       {
         headers: {
-          'X-CUSTOM-AUTH-KEY': AUTH_KEY,
+          'X-CUSTOM-AUTH-KEY': KQMSIM_AUTH_KEY,
         },
         cf: {
           cacheTtl: 60 * 24 * 60 * 60,

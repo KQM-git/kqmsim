@@ -42,7 +42,7 @@ export async function handleShare(request: IRequest): Promise<Response> {
     console.log(charNamePrefix);
     const key = charNamePrefix + uuid();
     const data = pako.deflate(JSON.stringify(content));
-    await WFPSIM_KV.put(key, data.buffer, {
+    await kqmsim_kv.put(key, data.buffer, {
       expirationTtl: 60 * 60 * 24 * 180,
     }); //180 days
     return new Response(key, {status: 200});

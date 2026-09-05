@@ -77,7 +77,7 @@ export function Simulator({
         </p>
       </div>
       <ActionList cfg={cfg} onChange={onChange} />
-      <div className="sticky bottom-0 flex flex-col gap-y-1 bg-[#450a0a]">
+      <div className="sticky bottom-0 flex flex-col gap-y-1 bg-bp-bg">
         {err !== '' && cfg !== '' ? (
           <div className="pl-2 pr-2 pt-2 mt-1">
             <Callout intent={Intent.DANGER} title="Error: Config Invalid">

@@ -16,17 +16,17 @@ const cards = [
 ];
 await mkdir(new URL('og/', publicDir), {recursive: true});
 for (const card of cards) {
-  const svg = await satori(box({width: '100%', height: '100%', background: '#240c16', color: '#fff5e5', fontFamily: 'Inter', padding: '54px 64px', flexDirection: 'column', position: 'relative'}, [
-    box({position: 'absolute', right: -100, top: -160, width: 650, height: 900, border: '1px solid #794153', borderRadius: 320, transform: 'rotate(28deg)', background: 'linear-gradient(135deg, #572337, #240c16)'}, []),
+  const svg = await satori(box({width: '100%', height: '100%', background: '#232024', color: '#ffffff', fontFamily: 'Inter', padding: '54px 64px', flexDirection: 'column', position: 'relative'}, [
+    box({position: 'absolute', right: -100, top: -160, width: 650, height: 900, border: '1px solid #66576e', borderRadius: 320, transform: 'rotate(28deg)', background: 'linear-gradient(135deg, #423745, #232024)'}, []),
     box({alignItems: 'center', gap: 22}, [
       {type: 'img', props: {src: `data:image/png;base64,${logo.toString('base64')}`, width: 76, height: 76, style: {objectFit: 'contain'}}},
       box({fontSize: 38}, 'KQM Sim'),
     ]),
-    box({marginTop: 48, fontSize: 17, letterSpacing: 4, color: '#e6b970'}, card.label),
+    box({marginTop: 48, fontSize: 17, letterSpacing: 4, color: '#dab2f9'}, card.label),
     box({marginTop: 20, fontSize: 76, lineHeight: 1.05, whiteSpace: 'pre', letterSpacing: -3}, card.title),
-    box({marginTop: 24, fontSize: 24, color: '#d6b9c2'}, card.description),
-    box({marginTop: 'auto', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #794153', paddingTop: 22, fontSize: 18}, [
-      box({color: '#e6b970'}, 'THEORYCRAFTING IN ACTION'), box({}, 'sim.kqm.gg'),
+    box({marginTop: 24, fontSize: 24, color: '#d1c6d8'}, card.description),
+    box({marginTop: 'auto', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #66576e', paddingTop: 22, fontSize: 18}, [
+      box({color: '#dab2f9'}, 'THEORYCRAFTING IN ACTION'), box({}, 'sim.kqm.gg'),
     ]),
   ]), {width: 1200, height: 630, fonts: [{name: 'Inter', data: font, weight: 600, style: 'normal'}]});
   await writeFile(new URL(`og/${card.name}.png`, publicDir), new Resvg(svg).render().asPng());

@@ -33,7 +33,7 @@ const App = ({}) => {
 
   return (
     <>
-      <header className="flex items-center gap-3 px-4 py-3 border-b border-white/20">
+      <header className="flex items-center gap-3 px-4 py-3 border-b border-[var(--kqm-border)] bg-bp-header-color">
         <a href="https://keqingmains.com" aria-label="KQM website">
           <img src="/kqm-logo.png" alt="KQM" width="48" height="48" className="object-contain" />
         </a>

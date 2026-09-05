@@ -18,7 +18,7 @@
   }
 }
 
-bodybody.bp4-dark {
+body.bp4-dark {
   background-color: var(--kqm-background);
   color: var(--kqm-text);
   color-scheme: dark;

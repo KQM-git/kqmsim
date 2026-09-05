@@ -1,12 +1,12 @@
 {
-  "name": "@gcsim/wfpworkers",
+  "name": "@gcsim/kqmworkers",
   "packageManager": "yarn@3.2.4",
   "version": "0.0.0",
   "private": true,
   "main": "src/index.ts",
   "scripts": {
     "start": "wrangler dev",
-    "upload:wasm": "wrangler r2 object put kqmsim/$(git rev-parse HEAD).wasm --file=../wfp/public/main.wasm --remote --content-type=application/wasm",
+    "upload:wasm": "wrangler r2 object put kqmsim/$(git rev-parse HEAD).wasm --file=../kqmsim/public/main.wasm --remote --content-type=application/wasm",
     "deploy": "yarn upload:wasm && wrangler deploy",
     "version": "yarn upload:wasm && wrangler versions upload"
   },

@@ -1,13 +1,14 @@
 {
-  "name": "@gcsim/wfpsim",
+  "name": "@gcsim/kqmsim",
   "packageManager": "yarn@3.2.4",
   "private": true,
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build",
+    "build": "yarn generate:og && vite build",
     "preview": "yarn run build && vite preview --host",
-    "build:wasm:web": "cd ../../../cmd/wasm && GCSIM_SHARE_KEY=\"\" && ./build.sh -trimpath -o ../../ui/packages/wfp/public/main.wasm && echo \"compiled wasm successfully!\"",
-    "watch:web": "watch \"yarn run build:wasm:web\" ../../../pkg ../../../internal ../../../cmd/wasm"
+    "build:wasm:web": "cd ../../../cmd/wasm && GCSIM_SHARE_KEY=\"\" && ./build.sh -trimpath -o ../../ui/packages/kqmsim/public/main.wasm && echo \"compiled wasm successfully!\"",
+    "watch:web": "watch \"yarn run build:wasm:web\" ../../../pkg ../../../internal ../../../cmd/wasm",
+    "generate:og": "node scripts/generate-og.mjs"
   },
   "dependencies": {
     "@blueprintjs/core": "^4.11.4",
@@ -17,9 +18,12 @@
     "axios": "^1.6.7"
   },
   "devDependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@resvg/resvg-js": "^2.6.2",
     "@vitejs/plugin-react": "^3.1.0",
     "git-rev-sync": "^3.0.2",
     "rollup-plugin-visualizer": "^5.8.3",
+    "satori": "^0.33.4",
     "vite": "^4.1.1",
     "vite-tsconfig-paths": "^4.0.5",
     "wrangler": "^3.48.0"

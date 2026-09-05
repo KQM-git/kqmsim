@@ -13,7 +13,7 @@ export const Commit = memo(({ commit }: Props) => {
   }
 
   const shortCommit = commit?.substring(0, 7);
-  const url = "https://github.com/ancientdialogue/wfpsim/commits/" + commit;
+  const url = "https://github.com/KQM-git/kqmsim/commits/" + commit;
 
   return (
     <Tag large={true} intent="none" minimal={true}>

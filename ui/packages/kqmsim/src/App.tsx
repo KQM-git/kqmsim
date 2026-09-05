@@ -33,10 +33,16 @@ const App = ({}) => {
 
   return (
     <>
+      <header className="flex items-center gap-3 px-4 py-3 border-b border-white/20">
+        <a href="https://keqingmains.com" aria-label="KQM website">
+          <img src="/kqm-logo.png" alt="KQM" width="48" height="48" className="object-contain" />
+        </a>
+        <a href="/" className="text-xl font-bold !text-white">KQM Sim</a>
+      </header>
       {serverMode ? (
-        <ServerMode children={children} />
+        <ServerMode>{children}</ServerMode>
       ) : (
-        <WasmMode children={children} />
+        <WasmMode>{children}</WasmMode>
       )}
     </>
   );

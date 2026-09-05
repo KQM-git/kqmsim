@@ -40,9 +40,8 @@ export function Simulator({
   return (
     <div className="px-2 py-4 w-full 2xl:mx-auto 2xl:container flex flex-col gap-2">
       <div className="mt-2 mb-2">
-        gcsim devs refuse to implement unreleased characters, so we did it for
-        them. The following are characters/weapons/artifacts currently not
-        implemented in gcsim that we have added here:
+        KQM Sim builds on gcsim with additional characters, weapons, and artifacts.
+        These additions are available here:
         <ul className="list-disc pl-4">
           <li>Albedo (Hex)</li>
           <li>Razor (Hex)</li>

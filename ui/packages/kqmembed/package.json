@@ -1,5 +1,5 @@
 {
-  "name": "@gcsim/wfpembed",
+  "name": "@gcsim/kqmembed",
   "packageManager": "yarn@3.2.4",
   "private": true,
   "main": "src/index.tsx",

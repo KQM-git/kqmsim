@@ -1,4 +1,24 @@
-# Overview
+# KQM Sim
+
+KQM Sim is a Genshin Impact combat simulator based on [gcsim](https://github.com/genshinsim/gcsim), with additional characters, weapons, and artifacts.
+
+Use [KQM Sim](https://sim.kqm.gg). Visit [KQM](https://keqingmains.com) for guides and theorycrafting.
+
+## Development
+
+From `ui`, run `yarn install`, then `yarn start:kqmsim`. Build with `yarn build:kqmsim`. Deploy the existing KQM Sim Worker and its assets with `yarn deploy:kqmsim`.
+
+## Social preview images
+
+`ui/packages/kqmsim/scripts/generate-og.mjs` creates 1200 × 630 PNG images with Satori and resvg. Edit its `cards` list to reuse the layout. Run `yarn workspace @gcsim/kqmsim generate:og` from `ui`; the UI build also runs this command. Fonts and the logo are local, so generation needs no network connection.
+
+The homepage uses `og/site.png`. Shared simulation pages use `og/share.png`. Both have Open Graph and Twitter metadata. Shared cards identify the page type; they do not claim to show a simulation's data.
+
+The logo is the official KQM asset used on [keqingmains.com](https://keqingmains.com), sourced from [this image](https://kqm-uploads.keqingmains.com/wp-content/uploads/2021/10/kqm-logo-full-e1633177025729.png). The image is stored without changes at `ui/packages/kqmsim/public/kqm-logo.png`. Inter is provided by `@fontsource/inter` under its bundled SIL Open Font License.
+
+## Upstream project
+
+### Overview
 
 gcsim is a Monte Carlo simulation tool used to model Genshin Impact's combat. The user can input a set of characters, targets, options, and actions to perform, and then gcsim executes these actions. It outputs a variety of results, such as mean DPS and the DPS distribution across iterations. The user can also scroll through a sample of 1 iteration, which comprehensively lists every action, damage instance, reactions, buffs, etc. frame by frame.
 

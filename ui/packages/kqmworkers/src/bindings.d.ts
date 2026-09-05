@@ -1,6 +1,7 @@
 export {};
 
 declare global {
+  const ASSETS: Fetcher;
   const kqmsim_r2: R2Bucket; //bucket
   const kqmsim_kv: KVNamespace; //kv
   const KQMSIM_ASSETS_ENDPOINT: string;

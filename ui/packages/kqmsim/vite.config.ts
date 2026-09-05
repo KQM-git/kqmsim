@@ -32,7 +32,7 @@ export default ({}: ConfigEnv) => {
     server: {
       proxy: {
         "/api": {
-          target: "https://wfpsim.com",
+          target: "https://sim.kqm.gg",
           changeOrigin: true,
         },
         "/hastebin/post": {

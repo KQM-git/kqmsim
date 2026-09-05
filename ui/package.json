@@ -30,15 +30,15 @@
     "build:db": "yarn workspace @gcsim/db build",
     "build:docs": "yarn workspace @gcsim/docs build",
     "build:taghelper": "yarn workspace @gcsim/taghelper build",
-    "build:wfpsim": "yarn workspace @gcsim/wfpsim build",
-    "build:kqmsim": "yarn workspace @gcsim/wfpsim build:wasm:web && yarn build:wfpsim && rimraf packages/wfp/dist/main.wasm",
-    "deploy:kqmsim": "yarn workspace @gcsim/wfpworkers deploy",
-    "version:kqmsim": "yarn workspace @gcsim/wfpworkers version",
+    "build:kqmsim-ui": "yarn workspace @gcsim/kqmsim build",
+    "build:kqmsim": "yarn workspace @gcsim/kqmsim build:wasm:web && yarn build:kqmsim-ui && rimraf packages/kqmsim/dist/main.wasm",
+    "deploy:kqmsim": "yarn workspace @gcsim/kqmworkers deploy",
+    "version:kqmsim": "yarn workspace @gcsim/kqmworkers version",
     "deploy:workers": "yarn workspace @gcsim/workers deploy",
     "start:workers": "yarn workspace @gcsim/workers start",
     "storybook": "yarn workspace @gcsim/storybook storybook",
-    "start:wfp": "concurrently \"yarn workspace @gcsim/wfpsim watch:web\" \"yarn:start:wfp-web\"",
-    "start:wfp-web": "yarn workspace @gcsim/wfpsim dev"
+    "start:kqmsim": "concurrently \"yarn workspace @gcsim/kqmsim watch:web\" \"yarn:start:kqmsim-web\"",
+    "start:kqmsim-web": "yarn workspace @gcsim/kqmsim dev"
   },
   "devDependencies": {
     "@types/eslint": "^8",

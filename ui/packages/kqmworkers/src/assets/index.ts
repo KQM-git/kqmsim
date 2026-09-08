@@ -1,8 +1,10 @@
+import {Env} from '../bindings';
 import { IRequest } from "itty-router";
 
 export async function handleAssets(
   request: IRequest,
-  event: FetchEvent
+  event: ExecutionContext,
+  env: Env
 ): Promise<Response> {
   const cacheUrl = new URL(request.url);
   const cacheKey = new Request(cacheUrl.toString(), request);
@@ -15,7 +17,7 @@ export async function handleAssets(
       `Response for request url: ${request.url} not present in cache. Fetching and caching request.`
     );
 
-    const resp = await fetch(new Request(KQMSIM_ASSETS_ENDPOINT + cacheUrl.pathname), {
+    const resp = await fetch(new Request(env.KQMSIM_ASSETS_ENDPOINT + cacheUrl.pathname), {
       cf: {
         cacheTtl: 60 * 24 * 60 * 60,
         cacheEverything: true,

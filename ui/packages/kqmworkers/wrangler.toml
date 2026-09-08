@@ -22,3 +22,6 @@ binding = "ASSETS"
 [[kv_namespaces]]
   binding = 'kqmsim_kv'
   id = 'bf233d51805e4ebc83ecf7189f7e6f54'
+
+[browser]
+binding = "BROWSER"

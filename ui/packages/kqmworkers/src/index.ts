@@ -1,3 +1,4 @@
+import {Env} from './bindings';
 import {Router} from 'itty-router';
 import {handleAssets} from './assets';
 import {handleInjectHead, handlePreview} from './preview';
@@ -17,6 +18,8 @@ router.get('/api/wasm/*', handleWasm);
 router.get('/sh/:key', handleInjectHead);
 router.get('/api/preview/:key', handlePreview);
 
-addEventListener('fetch', (event) => {
-  event.respondWith(router.handle(event.request, event));
-});
+export default {
+  fetch(request: Request, env: Env, context: ExecutionContext) {
+    return router.handle(request, context, env);
+  },
+};

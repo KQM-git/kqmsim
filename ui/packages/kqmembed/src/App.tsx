@@ -21,14 +21,12 @@ const App = ({id, src}: {id: string; src: string}) => {
   const [data, setData] = React.useState<SimulationResult | undefined>(
     undefined,
   );
-  const [loaded, setLoaded] = React.useState(0);
   const [completed, setCompleted] = React.useState(false);
   React.useEffect(() => {
     //https://gcsim.app/api/share/db/nFLhjtD9dfFN
     axios
       .get('/api/share/' + src + '/' + id)
       .then((res) => {
-        console.log(res);
         if (res.data) {
           setData(res.data);
         } else {
@@ -40,14 +38,26 @@ const App = ({id, src}: {id: string; src: string}) => {
       });
   }, []);
   React.useEffect(() => {
-    if (loaded >= (data?.character_details?.length ?? 0)) {
-      setCompleted(true);
-    }
-  }, [loaded]);
-
-  const handleOnImageLoaded = () => {
-    setLoaded(loaded + 1);
-  };
+    if (!data) return;
+    let cancelled = false;
+    // Preload SVG gear images and the portrait background as well as img elements.
+    const urls = new Set([
+      ...Array.from(document.querySelectorAll('img')).map((img) => img.src),
+      ...Array.from(document.querySelectorAll('svg image')).map((img) => img.getAttribute('href') ?? ''),
+      '/api/assets/misc/overlay.jpg',
+    ]);
+    Promise.all([...urls].filter(Boolean).map((url) => new Promise<void>((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve();
+      image.onerror = () => reject(new Error('Could not load preview image'));
+      image.src = url;
+    }))).then(() => document.fonts.ready).then(() => {
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (!cancelled) setCompleted(true);
+      }));
+    }).catch((error) => { if (!cancelled) setError(error.message); });
+    return () => { cancelled = true; };
+  }, [data]);
 
   if (err !== '') {
     return (
@@ -71,18 +81,19 @@ const App = ({id, src}: {id: string; src: string}) => {
       {completed ? (
         <span
           className="hidden absolute top-0 left-0"
-          id="images_loaded"></span>
+          id="images_loaded" data-preview-ready="true"></span>
       ) : null}
       <PreviewCard
         data={data}
-        className="bg-red-800"
-        onImageLoaded={handleOnImageLoaded}
+        className="kqm-preview"
       />
     </ErrorBoundary>
   );
 };
 
 const Routes = () => {
+  const key = new URLSearchParams(window.location.search).get('key');
+  if (key) return <App id={key} src="sh" />;
   return (
     <>
       <Switch>

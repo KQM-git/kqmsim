@@ -5,6 +5,8 @@ import {defineConfig} from 'vite';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: '/embed/',
+  build: {outDir: '../kqmsim/dist/embed', emptyOutDir: true},
   server: {
     proxy: {
       '/api': {

@@ -1,3 +1,4 @@
+import {Env} from '../bindings';
 import {uuid} from '@cfworker/uuid';
 import {IRequest} from 'itty-router';
 import pako from 'pako';
@@ -16,7 +17,7 @@ function getCharNames(data) {
   return sortedNames.length > 0 ? sortedNames.join('-') + '-' : '';
 }
 
-export async function handleShare(request: IRequest): Promise<Response> {
+export async function handleShare(request: IRequest, _event: ExecutionContext, env: Env): Promise<Response> {
   let content: any;
   console.log('share request received! processing data');
   try {
@@ -42,7 +43,7 @@ export async function handleShare(request: IRequest): Promise<Response> {
     console.log(charNamePrefix);
     const key = charNamePrefix + uuid();
     const data = pako.deflate(JSON.stringify(content));
-    await kqmsim_kv.put(key, data.buffer, {
+    await env.kqmsim_kv.put(key, data.buffer, {
       expirationTtl: 60 * 60 * 24 * 180,
     }); //180 days
     return new Response(key, {status: 200});

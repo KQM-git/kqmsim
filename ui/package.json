@@ -30,7 +30,7 @@
     "build:db": "yarn workspace @gcsim/db build",
     "build:docs": "yarn workspace @gcsim/docs build",
     "build:taghelper": "yarn workspace @gcsim/taghelper build",
-    "build:kqmsim-ui": "yarn workspace @gcsim/kqmsim build",
+    "build:kqmsim-ui": "yarn workspace @gcsim/kqmsim build && yarn workspace @gcsim/kqmembed build",
     "build:kqmsim": "yarn workspace @gcsim/kqmsim build:wasm:web && yarn build:kqmsim-ui && rimraf packages/kqmsim/dist/main.wasm",
     "deploy:kqmsim": "yarn workspace @gcsim/kqmworkers deploy",
     "version:kqmsim": "yarn workspace @gcsim/kqmworkers version",

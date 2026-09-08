@@ -1,8 +1,10 @@
+import {Env} from '../bindings';
 import { IRequest } from "itty-router";
 
 export async function handleWasm(
   request: IRequest,
-  event: FetchEvent
+  event: ExecutionContext,
+  env: Env
 ): Promise<Response> {
   const cacheUrl = new URL(request.url);
   const cacheKey = new Request(cacheUrl.toString(), request);
@@ -15,7 +17,7 @@ export async function handleWasm(
     const key = new URL(request.url).pathname.replace("/api/wasm/", "");
     console.log(`request key ${key}`);
 
-    const object = await kqmsim_r2.get(key);
+    const object = await env.kqmsim_r2.get(key);
 
     if (object == null) {
       console.log(`${key} not found in r2`);

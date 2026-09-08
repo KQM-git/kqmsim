@@ -1,9 +1,11 @@
+import {Env} from '../bindings';
 import { IRequest } from "itty-router";
 import pako from "pako";
 
 export async function handleView(
   request: IRequest,
-  event: FetchEvent
+  event: ExecutionContext,
+  env: Env
 ): Promise<Response> {
   let { params } = request;
   if (!params || !params.key) {
@@ -38,7 +40,7 @@ export async function handleView(
 
     //try grabbing from kv
     try {
-      const compressed: unknown = await kqmsim_kv.get(key, {
+      const compressed: unknown = await env.kqmsim_kv.get(key, {
         type: "arrayBuffer",
       });
       if (compressed === null) {

@@ -5,3 +5,11 @@
 body {
   overflow: hidden;
 }
+
+body.bp4-dark { margin: 0; background: #232024; color: #fff; }
+body .kqm-preview { width: 540px; height: 250px; background: #232024; }
+.kqm-preview .bg-slate-700, .kqm-preview .bg-gray-700 { background-color: #423745; }
+.kqm-preview .border-gray-600 { border-color: #66576e; }
+.kqm-preview .text-gray-400 { color: #d1c6d8; }
+.kqm-preview > div > div:last-child { min-height: 0; }
+.kqm-preview > div > div:last-child > div { min-width: 0; }

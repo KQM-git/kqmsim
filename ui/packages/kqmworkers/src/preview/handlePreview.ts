@@ -1,66 +1,53 @@
 import {IRequest} from 'itty-router';
+import {Env} from '../bindings';
 
 export async function handlePreview(
   request: IRequest,
-  event: FetchEvent,
+  context: ExecutionContext,
+  env: Env,
 ): Promise<Response> {
-  if (
-    typeof KQMSIM_PREVIEW_ENDPOINT === 'undefined' ||
-    typeof KQMSIM_AUTH_KEY === 'undefined'
-  ) {
-    return new Response('Preview service is not configured', {status: 503});
+  const key = request.params?.key?.replace(/\.png$/, '') ?? '';
+  if (!/^[a-zA-Z0-9_-]{1,150}$/.test(key)) {
+    return new Response('Invalid simulation key', {status: 400});
   }
+  const cacheKey = new Request(`https://sim.kqm.gg/api/preview/${key}.png`);
+  const cached = await caches.default.match(cacheKey);
+  if (cached) return cached;
 
-  let {params} = request;
-  if (!params || !params.key) {
-    return new Response(null, {
-      status: 400,
-      statusText: 'Bad Request',
-    });
-  }
-  const key = params.key.replace('.png', '');
-
-  if (key === '') {
-    return new Response(null, {
-      status: 400,
-      statusText: 'Bad Request',
-    });
-  }
-
-  console.log(key);
-
-  const cacheUrl = new URL(request.url);
-  const cacheKey = new Request(cacheUrl.toString(), request);
-  console.log(`checking for cache key: ${cacheUrl}`);
-  const cache = caches.default;
-  let response = await cache.match(cacheKey);
-
-  if (!response) {
-    console.log(
-      `Response for request url: ${request.url} not present in cache. Fetching and caching request.`,
-    );
-
-    const resp = await fetch(
-      new Request(KQMSIM_PREVIEW_ENDPOINT + '/generate/sh/' + key),
-      {
-        headers: {
-          'X-CUSTOM-AUTH-KEY': KQMSIM_AUTH_KEY,
-        },
-        cf: {
-          cacheTtl: 60 * 24 * 60 * 60,
-          cacheEverything: true,
-        },
-      },
-    );
-
-    response = new Response(resp.body, resp);
-
-    //don't cache errors
-    if (resp.ok) {
-      response.headers.set('Cache-Control', 'max-age=5184000');
-      event.waitUntil(cache.put(cacheKey, response.clone()));
+  try {
+    if (await env.kqmsim_kv.get(key, 'arrayBuffer') === null) {
+      return new Response('Simulation not found', {status: 404});
     }
+    const storedKey = `previews/v1/${key}.png`;
+    const stored = await env.kqmsim_r2.get(storedKey);
+    let body: BodyInit;
+    if (stored) {
+      body = stored.body;
+    } else {
+      const capture = await env.BROWSER.quickAction('screenshot', {
+        url: `https://sim.kqm.gg/embed/index.html?key=${key}`,
+        viewport: {width: 540, height: 250, deviceScaleFactor: 2},
+        screenshotOptions: {type: 'png'},
+        gotoOptions: {waitUntil: 'networkidle0', timeout: 30000},
+        waitForSelector: {selector: '[data-preview-ready="true"]', timeout: 30000},
+      });
+      if (!capture.ok || !capture.headers.get('Content-Type')?.includes('image/png')) {
+        console.error('Preview capture failed', capture.status);
+        return new Response('Preview is temporarily unavailable', {status: 503});
+      }
+      body = await capture.arrayBuffer();
+      await env.kqmsim_r2.put(storedKey, body, {
+        httpMetadata: {contentType: 'image/png'},
+      });
+    }
+    const response = new Response(body, {headers: {
+      'Content-Type': 'image/png',
+      'Cache-Control': 'public, max-age=86400',
+    }});
+    context.waitUntil(caches.default.put(cacheKey, response.clone()));
+    return response;
+  } catch (error) {
+    console.error('Preview generation failed', error);
+    return new Response('Preview is temporarily unavailable', {status: 503});
   }
-
-  return response;
 }

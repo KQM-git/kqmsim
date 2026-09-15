@@ -8,12 +8,14 @@ type PreviewCardProps = {
   data: model.SimulationResult;
   onImageLoaded?: () => void;
   className?: string;
+  showBuildStatus?: boolean;
 };
 
 export const PreviewCard = ({
   data,
   className,
   onImageLoaded = () => {},
+  showBuildStatus = true,
 }: PreviewCardProps) => {
   const cc = cn("w-screen h-screen bg-slate-800", className);
   return (
@@ -35,7 +37,7 @@ export const PreviewCard = ({
             );
           })}
         </div>
-        <Metadata data={data} />
+        <Metadata data={data} showBuildStatus={showBuildStatus} />
         <Graphs data={data} className="grow" />
       </div>
     </div>

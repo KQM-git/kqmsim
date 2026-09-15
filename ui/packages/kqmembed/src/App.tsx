@@ -86,6 +86,7 @@ const App = ({id, src}: {id: string; src: string}) => {
       <PreviewCard
         data={data}
         className="kqm-preview"
+        showBuildStatus={false}
       />
     </ErrorBoundary>
   );

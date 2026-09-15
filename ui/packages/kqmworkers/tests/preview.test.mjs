@@ -15,11 +15,20 @@ test('simulation preview capture and cache behavior', async () => {
   let cached;
   let fail = false;
   const png = new Uint8Array([137, 80, 78, 71]);
-  globalThis.caches = {default: {match: async () => cached, put: async () => {}}};
+  globalThis.caches = {default: {match: async (request) => {
+    assert.equal(request.url, 'https://sim.kqm.gg/api/preview/team-123.png?v=2');
+    return cached;
+  }, put: async () => {}}};
   const context = {waitUntil() {}};
   const env = {
     kqmsim_kv: {get: async () => exists ? new ArrayBuffer(1) : null},
-    kqmsim_r2: {get: async () => stored, put: async () => { writes++; }},
+    kqmsim_r2: {get: async (key) => {
+      assert.equal(key, 'previews/v2/team-123.png');
+      return stored;
+    }, put: async (key) => {
+      assert.equal(key, 'previews/v2/team-123.png');
+      writes++;
+    }},
     BROWSER: {quickAction: async (action, options) => {
       captures++;
       assert.equal(action, 'screenshot');

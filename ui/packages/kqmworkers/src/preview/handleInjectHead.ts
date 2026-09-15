@@ -5,7 +5,7 @@ const imageAlt = 'Simulation characters, weapons, artifact sets, and damage char
 
 export async function handleInjectHead(request, _context: ExecutionContext, env: Env): Promise<Response> {
   const res = await env.ASSETS.fetch(request);
-  const image = `https://sim.kqm.gg/api/preview/${encodeURIComponent(request.params.key)}.png`;
+  const image = `https://sim.kqm.gg/api/preview/${encodeURIComponent(request.params.key)}.png?v=2`;
   const content = (value: string) => ({element: (element: Element) => { element.setAttribute('content', value); }});
   return new HTMLRewriter()
     .on('title', {element: (element) => { element.setInnerContent(title); }})

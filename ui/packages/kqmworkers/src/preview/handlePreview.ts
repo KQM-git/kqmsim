@@ -10,7 +10,7 @@ export async function handlePreview(
   if (!/^[a-zA-Z0-9_-]{1,150}$/.test(key)) {
     return new Response('Invalid simulation key', {status: 400});
   }
-  const cacheKey = new Request(`https://sim.kqm.gg/api/preview/${key}.png`);
+  const cacheKey = new Request(`https://sim.kqm.gg/api/preview/${key}.png?v=2`);
   const cached = await caches.default.match(cacheKey);
   if (cached) return cached;
 
@@ -18,7 +18,7 @@ export async function handlePreview(
     if (await env.kqmsim_kv.get(key, 'arrayBuffer') === null) {
       return new Response('Simulation not found', {status: 404});
     }
-    const storedKey = `previews/v1/${key}.png`;
+    const storedKey = `previews/v2/${key}.png`;
     const stored = await env.kqmsim_r2.get(storedKey);
     let body: BodyInit;
     if (stored) {

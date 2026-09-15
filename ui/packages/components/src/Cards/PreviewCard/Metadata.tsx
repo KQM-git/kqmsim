@@ -12,9 +12,10 @@ import {
 
 type Props = {
   data: model.SimulationResult;
+  showBuildStatus?: boolean;
 };
 
-export const Metadata = ({ data }: Props) => {
+export const Metadata = ({ data, showBuildStatus = true }: Props) => {
   if (data.schema_version == null) {
     return (
       <Card className="flex flex-row flex-wrap !p-2 gap-2 justify-center">
@@ -33,8 +34,12 @@ export const Metadata = ({ data }: Props) => {
 
   return (
     <div className="flex flex-row flex-wrap !p-1.5 gap-2 justify-center bg-slate-700 m-1 -mt-0  rounded-sm border border-gray-600">
-      <Error signKey={data.key_type} modified={data.modified} />
-      {!data.modified && (data.key_type == null || data.key_type == "prod") ? (
+      {showBuildStatus ? (
+        <Error signKey={data.key_type} modified={data.modified} />
+      ) : (
+        <Dirty modified={data.modified ?? false} />
+      )}
+      {!data.modified && (!showBuildStatus || data.key_type == null || data.key_type == "prod") ? (
         <DPS dps={dps} />
       ) : null}
       <WarningItem warnings={data?.statistics?.warnings ?? undefined} />
@@ -52,8 +57,8 @@ type DPSProps = {
 export const DPS = ({ dps }: DPSProps) => {
   const { i18n } = useTranslation();
 
-  if (dps == undefined) {
-    <Item title="dps/target" value={"n/a"} />;
+  if (dps == undefined || !Number.isFinite(dps)) {
+    return <Item title="dps/target" value={"n/a"} />;
   }
 
   return (

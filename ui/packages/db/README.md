@@ -37,6 +37,47 @@ and result charts. It does not run the upstream Discord submission/review bots,
 MQTT queues, or simulation compute workers. Users can run configurations at
 https://sim.kqm.gg/simulator.
 
+## Public card endpoint
+
+Use `GET https://db.kqm.gg/api/db?q=<URL-encoded JSON>` to display simulation
+cards on another site. The response is `{ "data": [Entry, ...] }`, with the same
+entry format as the original database. No API key is required. This endpoint
+allows public browser reads through CORS. It does not accept writes.
+
+The original **Shared by others** component requests data once when the page
+loads. It selects each record with a 2% probability, sorts that sample by newest
+first, then returns up to three records. It does not poll on a timer.
+
+```js
+const query = {
+  query: { $sampleRate: 0.02 },
+  limit: 3,
+  skip: 0,
+  sort: { create_date: -1 },
+};
+const response = await fetch(
+  `https://db.kqm.gg/api/db?q=${encodeURIComponent(JSON.stringify(query))}`,
+);
+if (!response.ok) throw new Error("Could not load simulation cards.");
+const { data: entries } = await response.json();
+```
+
+For the three latest records, use `query: {}` instead. The random sample can
+contain fewer records than the limit. Supported sample rates are 0 through 1.
+
+Use these entry fields and URLs in the cards:
+
+| Card value | Field or URL |
+| --- | --- |
+| Viewer link | `https://db.kqm.gg/db/${encodeURIComponent(entry._id)}` |
+| Title | `entry.description` |
+| Author | `entry.submitter` |
+| Characters and gear | `entry.summary.team` |
+| Character image | `https://db.kqm.gg/api/assets/avatar/${character.name}.png` |
+| DPS per target | `entry.summary.mean_dps_per_target` |
+| Mode | `entry.summary.mode` |
+| View all | `https://db.kqm.gg/database` |
+
 ## Local use and deployment
 
 Use the repository's pinned Node, pnpm, and Wrangler versions. From `ui`:

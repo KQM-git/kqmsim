@@ -1,18 +1,24 @@
 import { compileQuery, QueryError } from "./query.mjs";
 import { ID_PATTERN, loadResult, syncPublicDatabase } from "./storage.mjs";
 
-const json = (value, status = 200) =>
+const json = (value, status = 200, headers = {}) =>
 	Response.json(value, {
 		status,
 		headers: {
 			"Cache-Control": "no-store",
 			"X-Content-Type-Options": "nosniff",
+			...headers,
 		},
 	});
 
 export default {
 	async fetch(request, env, ctx) {
 		const url = new URL(request.url);
+		const isDatabaseList =
+			url.pathname === "/api/db" || url.pathname === "/api/db/";
+		const publicReadHeaders = isDatabaseList
+			? { "Access-Control-Allow-Origin": "*" }
+			: {};
 		try {
 			if (!url.pathname.startsWith("/api/")) return env.ASSETS.fetch(request);
 			if (url.pathname.startsWith("/api/admin/")) {
@@ -50,9 +56,18 @@ export default {
 				}
 				return json({ error: "Not found" }, 404);
 			}
+			if (isDatabaseList && request.method === "OPTIONS")
+				return new Response(null, {
+					status: 204,
+					headers: {
+						...publicReadHeaders,
+						"Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+						"Access-Control-Max-Age": "86400",
+					},
+				});
 			if (request.method !== "GET" && request.method !== "HEAD")
-				return json({ error: "Method not allowed" }, 405);
-			if (url.pathname === "/api/db" || url.pathname === "/api/db/") {
+				return json({ error: "Method not allowed" }, 405, publicReadHeaders);
+			if (isDatabaseList) {
 				const raw = url.searchParams.get("q") ?? "{}";
 				if (raw.length > 8000) throw new QueryError("The search is too large.");
 				let input;
@@ -65,7 +80,11 @@ export default {
 				const { results } = await env.DB.prepare(sql)
 					.bind(...params)
 					.all();
-				return json({ data: results.map((row) => JSON.parse(row.document)) });
+				return json(
+					{ data: results.map((row) => JSON.parse(row.document)) },
+					200,
+					publicReadHeaders,
+				);
 			}
 			if (url.pathname === "/api/status") {
 				const total = await env.DB.prepare(
@@ -140,9 +159,13 @@ export default {
 			return json({ error: "Not found" }, 404);
 		} catch (error) {
 			if (error instanceof QueryError)
-				return json({ error: error.message }, 400);
+				return json({ error: error.message }, 400, publicReadHeaders);
 			console.error("Database request failed", error.message);
-			return json({ error: "The database is temporarily unavailable." }, 503);
+			return json(
+				{ error: "The database is temporarily unavailable." },
+				503,
+				publicReadHeaders,
+			);
 		}
 	},
 	async scheduled(_event, env) {

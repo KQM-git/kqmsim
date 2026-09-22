@@ -87,6 +87,55 @@ test("DPS sorting and page offsets are stable", () => {
 	);
 	assert.throws(() => ids({}, { limit: 1000 }), QueryError);
 });
+test("the homepage sample filter selects rows before sorting and limiting", () => {
+	const sampled = new DatabaseSync(":memory:");
+	try {
+		sampled.exec(
+			readFileSync(
+				new URL("../migrations/0001_database.sql", import.meta.url),
+				"utf8",
+			),
+		);
+		sampled.prepare(UPSERT).run({
+			1: JSON.stringify(rows),
+			2: Date.now(),
+			3: "sample-test",
+		});
+		let roll = 0;
+		sampled.function("random", () => roll);
+		const select = (rate, extra = {}) => {
+			const { sql, params } = compileQuery({
+				query: { $sampleRate: rate },
+				limit: 3,
+				skip: 0,
+				sort: { create_date: -1 },
+				...extra,
+			});
+			return sampled
+				.prepare(sql)
+				.all(...params)
+				.map((r) => JSON.parse(r.document)._id);
+		};
+		assert.deepEqual(select(0), []);
+		assert.deepEqual(select(0.02), ["a", "b", "c"]);
+		roll = 2147483647;
+		assert.deepEqual(select(0.02), []);
+		assert.deepEqual(
+			select(1, { sort: { "summary.mean_dps_per_target": -1 }, limit: 2 }),
+			["b", "a"],
+		);
+		sampled.prepare("UPDATE simulations SET visible=0 WHERE id='c'").run();
+		assert.deepEqual(select(1), ["a", "b"]);
+		assert.deepEqual(
+			select(1, { query: { $sampleRate: 1, "summary.char_names": "nahida" } }),
+			["a"],
+		);
+		for (const rate of [-1, 1.1, "0.02", null, {}, Number.NaN, Infinity])
+			assert.throws(() => select(rate), QueryError);
+	} finally {
+		sampled.close();
+	}
+});
 test("upserts replace a simulation without duplicates, and hidden entries are not public", () => {
 	db.prepare(UPSERT).run({
 		1: JSON.stringify([entry("a", ["nahida"], [1], 120000)]),
@@ -114,6 +163,57 @@ test("an invalid import is rejected and public clients cannot start an import", 
 		{},
 	);
 	assert.equal(response.status, 401);
+});
+
+test("external sites can read card data, but cannot write or access admin routes", async () => {
+	const env = {
+		DB: {
+			prepare: (sql) => ({
+				bind: (...params) => ({
+					all: () => ({ results: db.prepare(sql).all(...params) }),
+				}),
+			}),
+		},
+	};
+	const request = (path, options = {}) =>
+		worker.fetch(
+			new Request(`https://db.kqm.gg${path}`, {
+				headers: { Origin: "https://gcsim.app" },
+				...options,
+			}),
+			env,
+			{},
+		);
+	const query = encodeURIComponent(
+		JSON.stringify({ query: { $sampleRate: 1 }, limit: 3 }),
+	);
+	const response = await request(`/api/db?q=${query}`);
+	assert.equal(response.status, 200);
+	assert.equal(response.headers.get("Access-Control-Allow-Origin"), "*");
+	assert.equal(response.headers.get("Access-Control-Allow-Credentials"), null);
+	const { data } = await response.json();
+	assert.deepEqual(
+		data.map((e) => e._id),
+		["a", "b"],
+	);
+	assert.equal(data[0].summary.mean_dps_per_target, 120000);
+	assert.equal(data[0].summary.team[0].name, "nahida");
+	assert.equal(data[0].submitter, "Tester");
+
+	const preflight = await request("/api/db/", { method: "OPTIONS" });
+	assert.equal(preflight.status, 204);
+	assert.equal(preflight.headers.get("Access-Control-Allow-Origin"), "*");
+	assert.equal(
+		preflight.headers.get("Access-Control-Allow-Methods"),
+		"GET, HEAD, OPTIONS",
+	);
+	assert.equal((await request("/api/db", { method: "POST" })).status, 405);
+	const invalid = await request("/api/db?q=invalid");
+	assert.equal(invalid.status, 400);
+	assert.equal(invalid.headers.get("Access-Control-Allow-Origin"), "*");
+	const admin = await request("/api/admin/sync", { method: "OPTIONS" });
+	assert.equal(admin.status, 401);
+	assert.equal(admin.headers.get("Access-Control-Allow-Origin"), null);
 });
 
 test("failed imports preserve records and their cursor, release the lease, and resume", async (t) => {

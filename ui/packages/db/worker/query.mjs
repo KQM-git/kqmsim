@@ -90,6 +90,18 @@ export function compileQuery(input = {}) {
 			Object.entries(query)
 				.map(([key, condition]) => {
 					if (++clauses > 60) throw new QueryError("Too many filters.");
+					if (key === "$sampleRate") {
+						if (
+							typeof condition !== "number" ||
+							!Number.isFinite(condition) ||
+							condition < 0 ||
+							condition > 1
+						)
+							throw new QueryError("Sample rate must be between 0 and 1.");
+						// Sample each row before applying the requested sort and limit.
+						// Use 31 random bits to produce a value in [0, 1).
+						return `((random() & 2147483647) / 2147483648.0 < ${bind(condition)})`;
+					}
 					if (key === "$and" || key === "$or") {
 						if (!Array.isArray(condition) || condition.length === 0)
 							throw new QueryError("Invalid filter group.");

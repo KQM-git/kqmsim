@@ -15,8 +15,9 @@ the bucket through its binding; the bucket does not need a public URL.
 - Domain: `db.kqm.gg`.
 - Source branch: `codex/kqm-db` in `KQM-git/kqmsim`.
 
-The first schema was applied in the Cloudflare D1 console from
-`migrations/0001_database.sql` and recorded in `d1_migrations`.
+The schemas were applied in the Cloudflare D1 console from
+`migrations/0001_database.sql` and `migrations/0002_submissions.sql`, and recorded
+in `d1_migrations`.
 The existing KQM Sim and Compendium services use separate resources.
 
 ## Data updates
@@ -32,10 +33,52 @@ least 24 hours before starting another import. Failed requests retain the
 previous records and cursor. Entries removed from the source are hidden only
 after a complete import; their records remain in D1.
 
+Approved KQM submissions and replaced entries have `source='local'`. The public
+source import cannot overwrite or hide these records.
+
 This deployment supports public browsing, filters, sorting, configuration copy,
 and result charts. It does not run the upstream Discord submission/review bots,
 MQTT queues, or simulation compute workers. Users can run configurations at
 https://sim.kqm.gg/simulator.
+
+## Submissions and reviews
+
+- `/submit` is public. A contributor provides a completed KQM or gcsim result
+  link, display name, and description. The Worker validates the saved result,
+  stores an immutable copy in R2, and creates a pending D1 record.
+- `/submission/<id>` is an unlisted receipt. Anyone with this link can read the
+  submission, result, and review note. The public database does not list pending
+  or rejected submissions. Contributors must keep the receipt link.
+- `/review` requires the reviewer username and password. The page sends HTTP
+  Basic Auth to every review API request. Credentials stay in page memory, not
+  cookies or browser storage. Sign out, reload, or leave the review flow to clear
+  access. Result and comparison links open in new tabs to retain the review.
+- Reviewers can check characters, gear, DPS, and saved results; compare published
+  entries with the same team; then approve, reject, or replace an entry. Reject
+  and replace require a note. Each action has a confirmation dialog.
+- Approval adds the saved simulation to the public database. Replacement retains
+  the existing viewer ID and tags. The previous entry is retained in
+  `submissions.previous_document`. Rejection retains the submission and note.
+  Decisions are atomic: a second reviewer cannot overwrite a completed review.
+- The queue can import an existing `taghelper.simpact.app/id/<id>` link. Import
+  keeps the author, description, and completed result. It does not change the
+  original Discord queue. The upstream public API does not list pending entries,
+  so import them by link.
+
+This flow accepts completed results. It does not rerun configurations or validate
+game assumptions. Reviewers must inspect the saved result before approval.
+No Discord bot is required for new submissions.
+
+Set `REVIEW_USER` and `REVIEW_PASSWORD` as Cloudflare Worker secrets. Use a strong,
+random password. The sign-in form accepts ASCII credentials. Do not put these
+values in `wrangler.jsonc`, source files, or deployment logs. Add separate test
+credentials to the ignored `.dev.vars` file for local review checks.
+
+The Worker limits submission and failed sign-in requests to 10 per IP per minute
+at each Cloudflare location. It accepts only known KQM/gcsim result hosts, rejects
+redirects, and limits result files to 8 MB. Write requests require the site's own
+Origin and JSON content type. Review APIs have no public CORS access, and review
+responses are not cached.
 
 ## Public card endpoint
 
@@ -92,7 +135,8 @@ pnpm run dev:worker
 
 Store a random `SYNC_TOKEN` in `.dev.vars` for local use. Set the same value as a
 Worker secret for the environment that the import script will use. Never commit
-this file or the token. The public API cannot start imports or write records.
+this file or the token. The public API cannot start source imports or publish
+records; public writes only create pending submissions.
 
 ```sh
 node scripts/sync-public.mjs http://localhost:8787

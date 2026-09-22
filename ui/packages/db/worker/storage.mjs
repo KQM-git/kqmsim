@@ -10,7 +10,7 @@ export const UPSERT = `INSERT INTO simulations
   ON CONFLICT(id) DO UPDATE SET document=excluded.document,
     create_date=excluded.create_date, dps=excluded.dps,
     duration=excluded.duration, imported_at=excluded.imported_at,
-    seen_run=excluded.seen_run, visible=1`;
+    seen_run=excluded.seen_run, visible=1 WHERE simulations.source='upstream'`;
 
 export function validateEntries(entries) {
 	if (!Array.isArray(entries) || entries.length > 100)
@@ -107,7 +107,7 @@ async function importPages(env, { force = false, pages = 5 } = {}) {
 			// Retain withdrawn records for recovery, but exclude them from public searches.
 			statements.push(
 				env.DB.prepare(
-					"UPDATE simulations SET visible=0 WHERE seen_run != ?",
+					"UPDATE simulations SET visible=0 WHERE source='upstream' AND seen_run != ?",
 				).bind(state.run),
 			);
 		}

@@ -12,12 +12,16 @@ import {
 } from "./storage.mjs";
 
 const db = new DatabaseSync(":memory:");
-db.exec(
+const schema =
 	readFileSync(
 		new URL("../migrations/0001_database.sql", import.meta.url),
 		"utf8",
-	),
-);
+	) +
+	readFileSync(
+		new URL("../migrations/0002_submissions.sql", import.meta.url),
+		"utf8",
+	);
+db.exec(schema);
 const entry = (id, names, tags, dps, description = "Team") => ({
 	_id: id,
 	share_key: `share${id}`,
@@ -90,12 +94,7 @@ test("DPS sorting and page offsets are stable", () => {
 test("the homepage sample filter selects rows before sorting and limiting", () => {
 	const sampled = new DatabaseSync(":memory:");
 	try {
-		sampled.exec(
-			readFileSync(
-				new URL("../migrations/0001_database.sql", import.meta.url),
-				"utf8",
-			),
-		);
+		sampled.exec(schema);
 		sampled.prepare(UPSERT).run({
 			1: JSON.stringify(rows),
 			2: Date.now(),
@@ -218,12 +217,7 @@ test("external sites can read card data, but cannot write or access admin routes
 
 test("failed imports preserve records and their cursor, release the lease, and resume", async (t) => {
 	const storage = new DatabaseSync(":memory:");
-	storage.exec(
-		readFileSync(
-			new URL("../migrations/0001_database.sql", import.meta.url),
-			"utf8",
-		),
-	);
+	storage.exec(schema);
 	const prepare = (sql) => {
 		let params = [];
 		return {

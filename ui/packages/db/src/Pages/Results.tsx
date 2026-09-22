@@ -7,7 +7,13 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 
-export default function Results({ id }: { id: string }) {
+export default function Results({
+	id,
+	submission = false,
+}: {
+	id: string;
+	submission?: boolean;
+}) {
 	const { t } = useTranslation();
 	const [data, setData] = useState<SimResults | null>(null);
 	const [error, setError] = useState<string | null>(null);
@@ -19,9 +25,14 @@ export default function Results({ id }: { id: string }) {
 		setData(null);
 		setError(null);
 		document.title = "Simulation results — KQM Sim Database";
-		fetch(`/api/share/db/${encodeURIComponent(id)}`, {
-			signal: controller.signal,
-		})
+		fetch(
+			submission
+				? `/api/submissions/${encodeURIComponent(id)}/result`
+				: `/api/share/db/${encodeURIComponent(id)}`,
+			{
+				signal: controller.signal,
+			},
+		)
 			.then(async (response) => {
 				if (!response.ok)
 					throw new Error(
@@ -38,7 +49,7 @@ export default function Results({ id }: { id: string }) {
 				if (!controller.signal.aborted) setError(reason.message);
 			});
 		return () => controller.abort();
-	}, [id, attempt]);
+	}, [id, attempt, submission]);
 	const modelData = useMemo(
 		() => (data ? simResultsToModel(data) : null),
 		[data],
@@ -49,8 +60,11 @@ export default function Results({ id }: { id: string }) {
 	return (
 		<main className="mx-auto max-w-[1440px] px-4 py-8 sm:px-8">
 			<div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-				<Link href="/database" className="text-g-accent">
-					← Back to database
+				<Link
+					href={submission ? `/submission/${id}` : "/database"}
+					className="text-g-accent"
+				>
+					{submission ? "← Back to submission" : "← Back to database"}
 				</Link>
 				<h1 className="font-g-display text-g-h2 font-bold">
 					Simulation results

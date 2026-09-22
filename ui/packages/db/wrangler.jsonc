@@ -19,6 +19,13 @@
 		}
 	],
 	"r2_buckets": [{ "binding": "FILES", "bucket_name": "kqm-sim-database" }],
+	"ratelimits": [
+		{
+			"name": "SUBMISSION_LIMITER",
+			"namespace_id": "2026092201",
+			"simple": { "limit": 10, "period": 60 }
+		}
+	],
 	"triggers": { "crons": ["*/5 * * * *"] },
 	"routes": [{ "pattern": "db.kqm.gg", "custom_domain": true }],
 	"observability": { "enabled": true }

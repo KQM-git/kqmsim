@@ -5,6 +5,9 @@ import { Database } from "./Pages/Database";
 import Layout from "./Sectioning/layout";
 
 const Results = lazy(() => import("./Pages/Results"));
+const Submit = lazy(() => import("./Pages/Submit"));
+const Submission = lazy(() => import("./Pages/Submission"));
+const Review = lazy(() => import("./Pages/Review"));
 export default function App() {
 	const [location] = useLocation();
 
@@ -12,7 +15,17 @@ export default function App() {
 	// make react-infinite-scroll fetch pages forever. Reset scroll on every route change.
 	useEffect(() => {
 		window.scrollTo(0, 0);
-		if (!location.startsWith("/db/")) document.title = "KQM Sim Database";
+		if (location === "/submit")
+			document.title = "Submit a simulation — KQM Sim Database";
+		else if (location.startsWith("/review"))
+			document.title = "Review submissions — KQM Sim Database";
+		else if (
+			location.startsWith("/submission/") &&
+			!location.endsWith("/results")
+		)
+			document.title = "Submission status — KQM Sim Database";
+		else if (!location.startsWith("/db/") && !location.endsWith("/results"))
+			document.title = "KQM Sim Database";
 	}, [location]);
 
 	return (
@@ -23,6 +36,56 @@ export default function App() {
 				</Route>
 				<Route path="/database">
 					<Database />
+				</Route>
+				<Route path="/submit">
+					<Suspense
+						fallback={
+							<p className="p-8" role="status">
+								Loading submission form…
+							</p>
+						}
+					>
+						<Submit />
+					</Suspense>
+				</Route>
+				<Route path="/submission/:id/results">
+					{({ id }) => (
+						<Suspense
+							fallback={
+								<p className="p-8" role="status">
+									Loading results…
+								</p>
+							}
+						>
+							<Results id={id} submission />
+						</Suspense>
+					)}
+				</Route>
+				<Route path="/submission/:id">
+					{({ id }) => (
+						<Suspense
+							fallback={
+								<p className="p-8" role="status">
+									Loading submission…
+								</p>
+							}
+						>
+							<Submission id={id} />
+						</Suspense>
+					)}
+				</Route>
+				<Route path="/review/:id?">
+					{({ id }) => (
+						<Suspense
+							fallback={
+								<p className="p-8" role="status">
+									Loading review page…
+								</p>
+							}
+						>
+							<Review id={id} />
+						</Suspense>
+					)}
 				</Route>
 				<Route path="/db/:id">
 					{(params) => (

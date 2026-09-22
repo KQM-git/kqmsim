@@ -1,5 +1,6 @@
 import { compileQuery, QueryError } from "./query.mjs";
 import { ID_PATTERN, loadResult, syncPublicDatabase } from "./storage.mjs";
+import { handleSubmissions } from "./submissions.mjs";
 
 const json = (value, status = 200, headers = {}) =>
 	Response.json(value, {
@@ -21,6 +22,12 @@ export default {
 			: {};
 		try {
 			if (!url.pathname.startsWith("/api/")) return env.ASSETS.fetch(request);
+			if (
+				url.pathname === "/api/submissions" ||
+				url.pathname.startsWith("/api/submissions/") ||
+				url.pathname.startsWith("/api/review/")
+			)
+				return handleSubmissions(request, env);
 			if (url.pathname.startsWith("/api/admin/")) {
 				if (
 					!env.SYNC_TOKEN ||

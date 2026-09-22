@@ -54,7 +54,7 @@ export default function Nav() {
 						value={i18n.resolvedLanguage}
 						onValueChange={(value) => i18n.changeLanguage(value)}
 					>
-						<SelectTrigger>
+						<SelectTrigger aria-label="Language">
 							<SelectValue />
 						</SelectTrigger>
 						<SelectContent>

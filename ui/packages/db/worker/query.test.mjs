@@ -49,6 +49,7 @@ function ids(query, extra = {}) {
 		.map((r) => JSON.parse(r.document)._id);
 }
 test("character, tag, traveller, and exclusion filters select the right records", () => {
+	assert.deepEqual(ids({ "summary.mode": 0 }), ["a", "b", "c"]);
 	assert.deepEqual(ids({ "summary.char_names": "nahida" }), ["a"]);
 	assert.deepEqual(
 		ids({

@@ -7,7 +7,8 @@ const fields = {
 	"summary.sim_duration.mean": "duration",
 	description: "json_extract(document, '$.description')",
 	submitter: "json_extract(document, '$.submitter')",
-	"summary.mode": "json_extract(document, '$.summary.mode')",
+	// The public JSON omits mode 0 (fixed duration), its protobuf default.
+	"summary.mode": "COALESCE(json_extract(document, '$.summary.mode'), 0)",
 	"summary.target_count": "json_extract(document, '$.summary.target_count')",
 };
 const arrays = {

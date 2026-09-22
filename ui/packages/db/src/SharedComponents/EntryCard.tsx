@@ -1,7 +1,8 @@
 import { AvatarCard } from "@gcsim/components";
 import { Badge, Button, toast } from "@gcsim/primitives";
 import type { db } from "@gcsim/types";
-import { FaCopy, FaExternalLinkAlt } from "react-icons/fa";
+import { FaArrowRight, FaCopy } from "react-icons/fa";
+import { Link } from "wouter";
 import {
 	author,
 	created,
@@ -53,9 +54,9 @@ export function CardActions({ entry }: { entry: db.Entry }) {
 				<FaCopy size={12} /> Copy config
 			</Button>
 			<Button size="sm" asChild>
-				<a href={viewerLink(entry)} target="_blank" rel="noreferrer">
-					<FaExternalLinkAlt size={11} /> Open in viewer
-				</a>
+				<Link href={viewerLink(entry)}>
+					<FaArrowRight size={11} /> Open in viewer
+				</Link>
 			</Button>
 		</div>
 	);

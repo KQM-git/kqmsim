@@ -27,7 +27,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			"/api": {
-				target: "https://gcsim.app",
+				target: "http://localhost:8787",
 				changeOrigin: true,
 			},
 		},

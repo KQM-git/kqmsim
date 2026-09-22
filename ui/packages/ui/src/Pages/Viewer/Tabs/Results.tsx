@@ -37,12 +37,12 @@ export default (props: Props) => {
 
 	return (
 		<div className="w-full 2xl:mx-auto 2xl:container px-2">
-			<SingleGroup {...props} />
+			<ResultsContent {...props} />
 		</div>
 	);
 };
 
-const SingleGroup = ({ data, modelData, running, names }: Props) => (
+export const ResultsContent = ({ data, modelData, running, names }: Props) => (
 	<Group>
 		<TeamHeader characters={data?.character_details} />
 		<Metadata modelData={modelData} />

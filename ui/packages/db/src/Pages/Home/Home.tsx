@@ -1,10 +1,10 @@
 import tagData from "@gcsim/data/src/tags.json";
 import { dynamicKey } from "@gcsim/localization";
-import { Alert, AlertDescription, AlertTitle, Button } from "@gcsim/primitives";
-import { WhatsNew } from "@gcsim/ui/src/Pages/Dash/WhatsNew";
-import { Trans, useTranslation } from "react-i18next";
+import { Button } from "@gcsim/primitives";
+import { useTranslation } from "react-i18next";
 import { FaCalculator, FaDatabase } from "react-icons/fa";
 import { useLocation } from "wouter";
+import { DatabaseNotice } from "../../SharedComponents/DatabaseNotice";
 
 export const Home = () => {
 	const { t } = useTranslation();
@@ -20,7 +20,7 @@ export const Home = () => {
 			return (
 				<li key={key}>
 					<span className="font-semibold text-g-accent">{name}</span>
-					{`: ${t(dynamicKey("db.home.tag_desc_" + key))}`}
+					{`: ${t(dynamicKey(`db.home.tag_desc_${key}`))}`}
 				</li>
 			);
 		});
@@ -29,38 +29,31 @@ export const Home = () => {
 		<div className="mx-auto flex max-w-[1160px] flex-col gap-g-section p-g-page">
 			<section className="flex flex-col gap-g-base-lg rounded-g-xl border border-g-line-soft bg-g-surface p-8">
 				<span className="text-g-xs font-semibold uppercase tracking-wide text-g-accent">
-					{t("db.home.eyebrow")}
+					KQM · Genshin Impact
 				</span>
 				<h1 className="font-g-display text-g-h1 font-bold text-g-ink md:text-g-hero">
-					{t("db.home.welcome")}
+					KQM Sim Database
 				</h1>
 				<div className="flex flex-col gap-g-base text-g-ink-dim">
-					<p className="text-g-lg">{t("db.home.simpact_desc")}</p>
+					<p className="text-g-lg">
+						Explore team damage, character builds, and rotations. Find a
+						simulation, inspect the results, and copy its configuration into KQM
+						Sim.
+					</p>
 					<p>{t("db.home.simpact_tag_desc")}</p>
 					<p>{t("db.home.simpact_tag_list_header")}</p>
 					<ul className="ml-6 flex list-disc flex-col gap-g-base-sm marker:text-g-ink-mute">
 						{tagList}
 					</ul>
 				</div>
-				<Alert variant="warning">
-					<AlertTitle className="text-g-base">
-						{t("db.readme_header")}
-					</AlertTitle>
-					<AlertDescription>
-						<Trans i18nKey={"db.readme_body" as never}>
-							<p />
-							<p>{{ rerun: t("viewer.rerun") } as never}</p>
-							<p />
-						</Trans>
-					</AlertDescription>
-				</Alert>
+				<DatabaseNotice />
 				<div className="flex gap-g-base [&>*]:flex-1 sm:[&>*]:flex-none">
 					<Button size="lg" onClick={() => to("/database")}>
 						<FaDatabase size={14} /> {t("db.home.browse_database")}
 					</Button>
 					<Button size="lg" variant="ghost" asChild>
 						<a
-							href="https://gcsim.app/simulator"
+							href="https://sim.kqm.gg/simulator"
 							target="_blank"
 							rel="noreferrer"
 						>
@@ -68,13 +61,6 @@ export const Home = () => {
 						</a>
 					</Button>
 				</div>
-			</section>
-
-			<section className="flex flex-col gap-g-base">
-				<h2 className="font-g-display text-g-h2 font-semibold text-g-ink">
-					{t("dash.whats_new")}
-				</h2>
-				<WhatsNew />
 			</section>
 		</div>
 	);

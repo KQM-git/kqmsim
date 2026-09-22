@@ -1,13 +1,25 @@
 {
-	"name": "gcsim-db-worker",
+	"name": "kqm-sim-database",
+	"account_id": "c102bcadcefa0897a01701fd28bed543",
+	"main": "worker/index.mjs",
 	"compatibility_date": "2026-09-12",
-	"workers_dev": false,
-	// Static-only Worker: no worker script, no R2 bindings, no API routes.
-	// Serves the built db SPA with SPA fallback so client-side (wouter) routes
-	// resolve on deep-link/reload. Single production deploy — no preview,
-	// per-branch, or staging environments.
+	"workers_dev": true,
 	"assets": {
 		"directory": "./dist",
+		"binding": "ASSETS",
+		"run_worker_first": ["/api/*"],
 		"not_found_handling": "single-page-application"
-	}
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "kqm-sim-database",
+			"database_id": "ecbe003b-158b-4b47-90d6-83f596eb4179",
+			"migrations_dir": "migrations"
+		}
+	],
+	"r2_buckets": [{ "binding": "FILES", "bucket_name": "kqm-sim-database" }],
+	"triggers": { "crons": ["*/5 * * * *"] },
+	"routes": [{ "pattern": "db.kqm.gg", "custom_domain": true }],
+	"observability": { "enabled": true }
 }

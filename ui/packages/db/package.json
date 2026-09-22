@@ -5,7 +5,10 @@
 		"dev": "vite --host",
 		"build": "vite build",
 		"preview": "pnpm run build && vite preview --host",
-		"typecheck": "tsc --noEmit"
+		"typecheck": "tsc --noEmit",
+		"test:worker": "node --test worker/*.test.mjs",
+		"dev:worker": "wrangler dev",
+		"deploy": "pnpm build && wrangler deploy"
 	},
 	"dependencies": {
 		"@gcsim/components": "workspace:^",

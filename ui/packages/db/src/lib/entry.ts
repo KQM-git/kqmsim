@@ -54,5 +54,5 @@ export function tagNames(entry: db.Entry): string[] {
 }
 
 export function viewerLink(entry: db.Entry): string {
-	return `https://gcsim.app/db/${entry._id}`;
+	return `/db/${encodeURIComponent(entry._id ?? "")}`;
 }

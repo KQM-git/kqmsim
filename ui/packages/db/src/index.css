@@ -1,5 +1,34 @@
 @reference "../../tailwind.css";
 
+[data-theme="kqm"] {
+  color-scheme: dark;
+  --g-bg: #232024;
+  --g-surface: #2d282f;
+  --g-surface-2: #423745;
+  --g-surface-3: #514457;
+  --g-border: #66576e;
+  --g-border-soft: #4b3e50;
+  --g-text: #faf7fc;
+  --g-text-dim: #d1c6d8;
+  --g-text-mute: #b7a8c1;
+  --g-accent: #dab2f9;
+  --g-accent-hover: #ebd2ff;
+  --g-accent-fg: #232024;
+  --g-accent-weak: #423745;
+  --g-success: #8bd6b1;
+  --g-warning: #e7be80;
+  --g-danger: #ff97ac;
+}
+
+/* Keep the light KQM buttons legible at every button size. */
+[data-theme="kqm"] [data-slot="button"][data-variant="default"] {
+  color: var(--g-accent-fg);
+}
+
+@media (max-width: 600px) {
+  [data-theme="kqm"] { --g-sp-page: 16px; }
+}
+
 @layer utilities {
 
   .artifact-top-left {
@@ -114,7 +143,7 @@ div.sticky-header {
   left: 0;
   right: 0;
   bottom: 0;
-  background: url("./Components/Images/overlay.jpg");
+  background: var(--g-surface-2);
   background-size: cover;
   mix-blend-mode: luminosity;
   background-position: center;

@@ -4,13 +4,11 @@ export class DbHomePage {
 	readonly page: Page;
 	readonly browse: Locator;
 	readonly welcome: Locator;
-	readonly whatsNew: Locator;
 
 	constructor(page: Page) {
 		this.page = page;
 		this.browse = page.getByRole("button", { name: "Browse database" });
-		this.welcome = page.getByRole("heading", { name: "Welcome to Simpact" });
-		this.whatsNew = page.getByRole("heading", { name: "What's new" });
+		this.welcome = page.getByRole("heading", { name: "KQM Sim Database" });
 	}
 
 	/** Navigate to the home page and wait for React to mount into `#root`. */
@@ -22,6 +20,5 @@ export class DbHomePage {
 	async waitForLoaded(): Promise<void> {
 		await expect(this.welcome).toBeVisible();
 		await expect(this.browse).toBeVisible();
-		await expect(this.whatsNew).toBeVisible();
 	}
 }

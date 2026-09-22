@@ -1,9 +1,9 @@
 import { ActionBar } from "SharedComponents/ActionBar";
-import { RiskWarning, Warning } from "@gcsim/components";
 import type { db } from "@gcsim/types";
 import eula from "images/eula.png";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { DatabaseNotice } from "../../SharedComponents/DatabaseNotice";
 import { ListView } from "../../SharedComponents/ListView";
 
 type Props = {
@@ -17,19 +17,15 @@ export const DBView = (props: Props) => {
 	return (
 		<div className="mx-auto flex max-w-[1160px] flex-col gap-g-base-lg px-8 py-4">
 			<ActionBar simCount={props.data.length} />
-			<RiskWarning />
-			<Warning
-				hideKey="hide-warning-db"
-				headerKey="db.readme_header"
-				bodyKey="db.readme_body"
-			/>
+			<DatabaseNotice />
 			{props.data.length === 0 ? (
-				<div className="flex h-screen flex-col items-center justify-center">
+				<div className="flex min-h-64 flex-col items-center justify-center gap-4">
 					<img
 						src={eula}
 						alt=""
 						className="size-32 object-contain opacity-50"
 					/>
+					<p>No simulations match these filters.</p>
 				</div>
 			) : (
 				<InfiniteScroll

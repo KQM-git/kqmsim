@@ -13,7 +13,6 @@ import {
 } from "@gcsim/primitives";
 import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
-import logo from "./logo.png";
 
 const LANGUAGES = [
 	{ value: "en", key: "nav.english" },
@@ -29,16 +28,22 @@ export default function Nav() {
 	const { t, i18n } = useTranslation();
 
 	return (
-		<Navbar className="h-[50px]">
-			<div className="mx-auto flex w-full max-w-[1160px] px-8">
+		<Navbar className="h-16 border-b border-g-line-soft bg-g-surface">
+			<div className="mx-auto flex w-full max-w-[1160px] px-4 sm:px-8">
 				<NavbarHeading className="!mr-[10px]">
-					<Link href="/" className="flex h-[50px] items-center">
+					<Link
+						href="/"
+						className="flex h-16 items-center gap-3"
+						aria-label="KQM Sim Database home"
+					>
 						<img
-							src={logo}
+							src="/kqm-logo.png"
 							alt=""
-							className="object-scale-down max-h-[75%] m-auto mr-2"
+							className="h-11 w-11 object-contain"
 						/>
-						<span className="font-medium font-mono">simpact</span>
+						<span className="font-g-display text-g-ink font-bold">
+							KQM Sim <span className="text-g-accent">Database</span>
+						</span>
 					</Link>
 				</NavbarHeading>
 				<NavbarGroup className="min-[550px]:flex items-stretch">

@@ -49,7 +49,6 @@ func (c *char) Init() error {
 	c.skillHook()
 	c.a1()
 	c.hexereiInit()
-	c.c1Init()
 	c.c6Init()
 	return nil
 }

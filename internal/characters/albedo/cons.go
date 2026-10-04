@@ -21,12 +21,19 @@ const (
 	c6TransientBlossomDMG = "albedo-c6-dmg"
 )
 
-func (c *char) c1Init() {
+func (c *char) c1OnCast() {
 	if c.Base.Cons < 1 {
 		return
 	}
 	c.c1Buff = make([]float64, attributes.EndStatType)
 	c.c1Buff[attributes.DEFP] = 0.5
+	c.AddStatMod(character.StatMod{
+		Base:         modifier.NewBase("albedo-c1", 20*60),
+		AffectedStat: attributes.DEFP,
+		Amount: func() []float64 {
+			return c.c1Buff
+		},
+	})
 }
 
 func (c *char) c1OnSkillTick() {
@@ -35,13 +42,6 @@ func (c *char) c1OnSkillTick() {
 	}
 	c.AddEnergy("albedo-c1", 1.2)
 	c.Core.Log.NewEvent("c1 restoring energy", glog.LogCharacterEvent, c.Index())
-	c.AddStatMod(character.StatMod{
-		Base:         modifier.NewBase("albedo-c1", 20*60),
-		AffectedStat: attributes.DEFP,
-		Amount: func() []float64 {
-			return c.c1Buff
-		},
-	})
 }
 
 func (c *char) c2OnSkillTick() {

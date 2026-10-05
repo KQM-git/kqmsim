@@ -1,8 +1,8 @@
+import { initI18n } from "@gcsim/localization";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 
-import { initI18n } from "@gcsim/localization";
 initI18n().addResourceBundle(
 	"en",
 	"game",
@@ -20,6 +20,7 @@ initI18n().addResourceBundle(
 	true,
 	true,
 );
+
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

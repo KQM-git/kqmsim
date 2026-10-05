@@ -1,5 +1,5 @@
-import { Env } from "../bindings";
 import { IRequest } from "itty-router";
+import { Env } from "../bindings";
 
 export async function handleAssets(
 	request: IRequest,

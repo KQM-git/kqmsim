@@ -1,9 +1,9 @@
 import { type ExecutorSupplier, WasmExecutor } from "@gcsim/executors";
 import { Field, FieldTitle, NumberInput } from "@gcsim/primitives";
-import { UI } from "./UI";
 import { useLocalStorage } from "@gcsim/utils";
 import { type ReactNode, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { UI } from "./UI";
 
 const minWorkers = 1;
 const maxWorkers = 30;

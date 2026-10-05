@@ -1,7 +1,7 @@
-import { Env } from "../bindings";
 import { uuid } from "@cfworker/uuid";
 import { IRequest } from "itty-router";
 import pako from "pako";
+import { Env } from "../bindings";
 import { validator } from "./validation";
 
 function getCharNames(data) {

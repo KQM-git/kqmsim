@@ -1,6 +1,6 @@
-import { Env } from "../bindings";
 import { IRequest } from "itty-router";
 import pako from "pako";
+import { Env } from "../bindings";
 
 export async function handleView(
 	request: IRequest,

@@ -27,7 +27,7 @@ const App = ({ id, src }: { id: string; src: string }) => {
 			.catch((e) => {
 				setError(JSON.stringify(e));
 			});
-	}, []);
+	}, [id, src]);
 	React.useEffect(() => {
 		if (!data) return;
 		let cancelled = false;

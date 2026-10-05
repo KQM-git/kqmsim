@@ -1,6 +1,6 @@
-import { Env } from "./bindings";
 import { Router } from "itty-router";
 import { handleAssets } from "./assets";
+import { Env } from "./bindings";
 import { handleInjectHead, handlePreview } from "./preview";
 import { handleShare, handleView } from "./share";
 import { handleWasm } from "./wasm";

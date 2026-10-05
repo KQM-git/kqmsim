@@ -1,7 +1,7 @@
 import { compileQuery, QueryError } from "./query.mjs";
 import { ID_PATTERN, loadResult, syncPublicDatabase } from "./storage.mjs";
-import { handleUpgrades } from "./upgrades.mjs";
 import { handleSubmissions } from "./submissions.mjs";
+import { handleUpgrades } from "./upgrades.mjs";
 
 const json = (value, status = 200, headers = {}) =>
 	Response.json(value, {

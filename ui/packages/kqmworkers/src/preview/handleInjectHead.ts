@@ -1,4 +1,5 @@
 import { Env } from "../bindings";
+
 const title = "KQM Sim — Shared simulation";
 const description =
 	"Open this Genshin Impact simulation and explore team damage, rotations, and results.";

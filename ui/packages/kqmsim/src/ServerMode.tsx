@@ -6,9 +6,9 @@ import {
 	FieldTitle,
 	Input,
 } from "@gcsim/primitives";
-import { UI } from "./UI";
 import React, { type ReactNode, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { UI } from "./UI";
 
 let exec: ServerExecutor | undefined;
 const urlKey = "server-mode-url";

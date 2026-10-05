@@ -13,6 +13,7 @@ initI18n().addResourceBundle(
 	true,
 	true,
 );
+
 import "@gcsim/components/src/index.css";
 import "./index.css";
 

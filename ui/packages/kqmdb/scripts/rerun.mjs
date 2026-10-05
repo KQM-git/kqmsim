@@ -1,16 +1,17 @@
 // Resumable upgrade runner. Results stay local unless --publish is supplied.
-import { parseArgs } from "node:util";
+
+import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
 	existsSync,
 	mkdirSync,
 	readFileSync,
-	writeFileSync,
 	renameSync,
 	rmSync,
+	writeFileSync,
 } from "node:fs";
-import { resolve, join } from "node:path";
-import { spawnSync } from "node:child_process";
+import { join, resolve } from "node:path";
+import { parseArgs } from "node:util";
 import { resultSummary } from "../worker/submissions.mjs";
 
 const { values } = parseArgs({

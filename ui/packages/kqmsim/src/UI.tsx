@@ -1,8 +1,6 @@
-import { dynamicKey } from "@gcsim/localization";
-import { useTranslation } from "react-i18next";
 import {
-	defaultEditorPrefs,
 	DefaultSampleOptions,
+	defaultEditorPrefs,
 	Editor,
 	ExecutorProvider,
 	namedSeeds,
@@ -13,16 +11,20 @@ import {
 	useRunResult,
 	useValidation,
 } from "@gcsim/components";
+import { dynamicKey } from "@gcsim/localization";
 import {
 	Button,
 	Dialog,
 	DialogContent,
+	DialogDescription,
+	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "@gcsim/primitives";
 import type { Executor, ExecutorSupplier, model, Sample } from "@gcsim/types";
 import { useLocalStorage } from "@gcsim/utils";
 import { type ReactNode, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { teamCharacters } from "./characters";
 import { downloadSample } from "./downloadSample";
 
@@ -47,6 +49,12 @@ function Workspace({ settings }: { settings: ReactNode }) {
 	const { exec, isReady, busy, run, cancel } = useExecutor();
 	const { result, error } = useRunResult();
 	const [config, setConfig] = useLocalStorage("cfg", "");
+	const [incomingConfig, setIncomingConfig] = useState(() => {
+		const value = new URLSearchParams(window.location.hash.slice(1)).get(
+			"config",
+		);
+		return value?.trim() ? value : null;
+	});
 	const [prefs, setPrefs] = useLocalStorage(
 		"kqm-editor-prefs",
 		defaultEditorPrefs,
@@ -70,6 +78,15 @@ function Workspace({ settings }: { settings: ReactNode }) {
 		DefaultSampleOptions,
 	);
 	const data = loaded ?? result;
+
+	function dismissConfigImport() {
+		setIncomingConfig(null);
+		window.history.replaceState(
+			window.history.state,
+			"",
+			window.location.pathname + window.location.search,
+		);
+	}
 
 	useEffect(() => {
 		const match = window.location.pathname.match(
@@ -310,6 +327,38 @@ function Workspace({ settings }: { settings: ReactNode }) {
 					)}
 				</>
 			)}
+			<Dialog
+				open={incomingConfig !== null}
+				onOpenChange={(open) => {
+					if (!open) dismissConfigImport();
+				}}
+			>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Load database config?</DialogTitle>
+						<DialogDescription>
+							{config.trim()
+								? "This will replace your saved config in KQM Sim."
+								: "Load this config from the database into KQM Sim."}
+						</DialogDescription>
+					</DialogHeader>
+					<DialogFooter>
+						<Button variant="outline" onClick={dismissConfigImport}>
+							Cancel
+						</Button>
+						<Button
+							onClick={() => {
+								if (incomingConfig === null) return;
+								setConfig(incomingConfig);
+								setTab("simulator");
+								dismissConfigImport();
+							}}
+						>
+							{config.trim() ? "Replace config" : "Load config"}
+						</Button>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
 			<Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
 				<DialogContent>
 					<DialogHeader>

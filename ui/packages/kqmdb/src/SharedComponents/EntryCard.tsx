@@ -13,6 +13,7 @@ import {
 	team,
 	viewerLink,
 } from "../lib/entry";
+import { SendToSimulator } from "./SendToSimulator";
 
 export function copyConfig(entry: db.Entry) {
 	const cfg = entry.config ?? "";
@@ -52,6 +53,7 @@ export function CardActions({ entry }: { entry: db.Entry }) {
 			<Button size="sm" variant="secondary" onClick={() => copyConfig(entry)}>
 				<FaCopy size={12} /> Copy config
 			</Button>
+			<SendToSimulator config={entry.config} />
 			<Button size="sm" asChild>
 				<a href={viewerLink(entry)} target="_blank" rel="noopener noreferrer">
 					<FaArrowRight size={11} /> Open in viewer

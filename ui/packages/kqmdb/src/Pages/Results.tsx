@@ -1,10 +1,11 @@
+import { ResultsView } from "@gcsim/components";
 import { dynamicKey } from "@gcsim/localization";
 import { Button, Spinner } from "@gcsim/primitives";
 import type { model } from "@gcsim/types";
-import { ResultsView } from "@gcsim/components";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
+import { SendToSimulator } from "../SharedComponents/SendToSimulator";
 
 export default function Results({
 	id,
@@ -98,12 +99,9 @@ export default function Results({
 						<pre className="overflow-x-auto whitespace-pre-wrap break-words font-g-mono text-g-sm">
 							{data.config_file}
 						</pre>
-						<a
-							className="mt-4 inline-block text-g-accent"
-							href="https://sim.kqm.gg/simulator"
-						>
-							Open KQM Sim
-						</a>
+						<div className="mt-4">
+							<SendToSimulator config={data.config_file} />
+						</div>
 					</section>
 				</>
 			)}

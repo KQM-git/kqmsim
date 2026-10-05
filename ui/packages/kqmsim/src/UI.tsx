@@ -24,6 +24,7 @@ import type { Executor, ExecutorSupplier, model, Sample } from "@gcsim/types";
 import { useLocalStorage } from "@gcsim/utils";
 import { type ReactNode, useEffect, useState } from "react";
 import { teamCharacters } from "./characters";
+import { downloadSample } from "./downloadSample";
 
 export function UI({
 	exec,
@@ -304,6 +305,7 @@ function Workspace({ settings }: { settings: ReactNode }) {
 							sample={sample}
 							settings={sampleSettings}
 							onSettingsChange={setSampleSettings}
+							onDownload={downloadSample}
 						/>
 					)}
 				</>

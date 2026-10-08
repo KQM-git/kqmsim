@@ -21,12 +21,18 @@ const (
 	c6TransientBlossomDMG = "albedo-c6-dmg"
 )
 
-func (c *char) c1OnCast() {
+func (c *char) c1Init() {
 	if c.Base.Cons < 1 {
 		return
 	}
 	c.c1Buff = make([]float64, attributes.EndStatType)
 	c.c1Buff[attributes.DEFP] = 0.5
+}
+
+func (c *char) c1OnSkillCast() {
+	if c.Base.Cons < 1 {
+		return
+	}
 	c.AddStatMod(character.StatMod{
 		Base:         modifier.NewBase("albedo-c1", 20*60),
 		AffectedStat: attributes.DEFP,

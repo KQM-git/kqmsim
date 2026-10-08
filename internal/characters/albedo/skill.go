@@ -53,6 +53,9 @@ func (c *char) Skill(p map[string]int) (action.Info, error) {
 
 	c.Core.QueueAttackWithSnap(ai, c.bloomSnapshot, combat.NewCircleHitOnTarget(skillPos, nil, 5), skillHitmark)
 
+	// c1 def bonus activates before snapshot
+	c.c1OnSkillCast()
+
 	// snapshot for ticks
 	ai.Abil = skillAbilTick
 	ai.ICDTag = attacks.ICDTagElementalArt

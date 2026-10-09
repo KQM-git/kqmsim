@@ -1280,7 +1280,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.066667,
+					InitialValue: 0.06667,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -2057,7 +2057,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_HP_PERCENT,
-					InitialValue: 0.102133,
+					InitialValue: 0.10213,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_101,
 				},
 			},
@@ -2697,7 +2697,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_DEFENSE_PERCENT,
-					InitialValue: 0.150133,
+					InitialValue: 0.15013,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -2937,7 +2937,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_PHYSICAL_ADD_HURT,
-					InitialValue: 0.150133,
+					InitialValue: 0.15013,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -3257,7 +3257,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_PHYSICAL_ADD_HURT,
-					InitialValue: 0.075067,
+					InitialValue: 0.07507,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -4057,7 +4057,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_PHYSICAL_ADD_HURT,
-					InitialValue: 0.150133,
+					InitialValue: 0.15013,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -5074,7 +5074,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.066667,
+					InitialValue: 0.06667,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -5314,7 +5314,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.133333,
+					InitialValue: 0.13333,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -5394,7 +5394,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.066667,
+					InitialValue: 0.06667,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -5474,7 +5474,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.133333,
+					InitialValue: 0.13333,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -5554,7 +5554,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.133333,
+					InitialValue: 0.13333,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -6274,7 +6274,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_DEFENSE_PERCENT,
-					InitialValue: 0.150133,
+					InitialValue: 0.15013,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -6434,7 +6434,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.066667,
+					InitialValue: 0.06667,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -7234,7 +7234,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.066667,
+					InitialValue: 0.06667,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -7314,7 +7314,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_ATTACK_PERCENT,
-					InitialValue: 0.051067,
+					InitialValue: 0.05107,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_101,
 				},
 			},
@@ -9588,7 +9588,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.133333,
+					InitialValue: 0.13333,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -10228,7 +10228,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.066667,
+					InitialValue: 0.06667,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -11702,7 +11702,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_PHYSICAL_ADD_HURT,
-					InitialValue: 0.075067,
+					InitialValue: 0.07507,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -12182,7 +12182,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_HP_PERCENT,
-					InitialValue: 0.102133,
+					InitialValue: 0.10213,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_101,
 				},
 			},
@@ -13142,7 +13142,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.066667,
+					InitialValue: 0.06667,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -13302,7 +13302,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.066667,
+					InitialValue: 0.06667,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -13462,7 +13462,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.133333,
+					InitialValue: 0.13333,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -13542,7 +13542,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.066667,
+					InitialValue: 0.06667,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -13839,7 +13839,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.133333,
+					InitialValue: 0.13333,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -14296,7 +14296,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.113333,
+					InitialValue: 0.11333,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_101,
 				},
 			},
@@ -14856,7 +14856,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.133333,
+					InitialValue: 0.13333,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -14936,7 +14936,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_PHYSICAL_ADD_HURT,
-					InitialValue: 0.075067,
+					InitialValue: 0.07507,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -16296,7 +16296,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.066667,
+					InitialValue: 0.06667,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -17736,7 +17736,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_DEFENSE_PERCENT,
-					InitialValue: 0.063733,
+					InitialValue: 0.06373,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_101,
 				},
 			},
@@ -17976,7 +17976,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.066667,
+					InitialValue: 0.06667,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -18593,7 +18593,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.133333,
+					InitialValue: 0.13333,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},
@@ -18993,7 +18993,7 @@ var WeaponMap = map[keys.Weapon]*model.WeaponData{
 				},
 				{
 					PropType:     model.FightPropType_FIGHT_PROP_CHARGE_EFFICIENCY,
-					InitialValue: 0.066667,
+					InitialValue: 0.06667,
 					Curve:        model.GrowCurveType_GROW_CURVE_CRITICAL_201,
 				},
 			},

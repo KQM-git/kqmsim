@@ -2547,7 +2547,7 @@ var MonsterMap = map[int]*model.MonsterData{
 		Id:  23070902,
 		Key: "cryocicin",
 		BaseStats: &model.MonsterStatsData{
-			BaseHp:  2.743134,
+			BaseHp:  2.74313,
 			HpCurve: model.GrowCurveType_GROW_CURVE_HP_2,
 			Resist: &model.MonsterResistData{
 				FireResist:     0.1,
@@ -3111,7 +3111,7 @@ var MonsterMap = map[int]*model.MonsterData{
 		Id:  23070901,
 		Key: "electrocicin",
 		BaseStats: &model.MonsterStatsData{
-			BaseHp:  2.743134,
+			BaseHp:  2.74313,
 			HpCurve: model.GrowCurveType_GROW_CURVE_HP_2,
 			Resist: &model.MonsterResistData{
 				FireResist:     0.1,
@@ -8004,7 +8004,7 @@ var MonsterMap = map[int]*model.MonsterData{
 		Id:  23070245,
 		Key: "oprichnikiengineer",
 		BaseStats: &model.MonsterStatsData{
-			BaseHp:  7.315024,
+			BaseHp:  7.31502,
 			HpCurve: model.GrowCurveType_GROW_CURVE_HP_2,
 			Resist: &model.MonsterResistData{
 				FireResist:     0.1,
@@ -8104,7 +8104,7 @@ var MonsterMap = map[int]*model.MonsterData{
 		Id:  23070240,
 		Key: "oprichnikimedic",
 		BaseStats: &model.MonsterStatsData{
-			BaseHp:  7.315024,
+			BaseHp:  7.31502,
 			HpCurve: model.GrowCurveType_GROW_CURVE_HP_2,
 			Resist: &model.MonsterResistData{
 				FireResist:     0.1,
@@ -8122,7 +8122,7 @@ var MonsterMap = map[int]*model.MonsterData{
 		Id:  23070220,
 		Key: "oprichnikisniper",
 		BaseStats: &model.MonsterStatsData{
-			BaseHp:  2.194507,
+			BaseHp:  2.19451,
 			HpCurve: model.GrowCurveType_GROW_CURVE_HP_2,
 			Resist: &model.MonsterResistData{
 				FireResist:     0.1,

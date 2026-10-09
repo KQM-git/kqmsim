@@ -1,0 +1,46 @@
+use: pipeline
+kind: character
+name: valeriy
+
+override:
+  id: 10000137
+  icd_group:
+    ValeriyBurst:
+      name: Avatar_Valeriy_Burst
+
+combat:
+  icd_groups:
+    - ValeriyBurst
+
+talents:
+  - attack:
+      - attack(1-Hit DMG)
+      - attack(2-Hit DMG)
+      - attack(3-Hit DMG)
+  - charge:
+      - attack(Charged Attack DMG)
+  - specialCharge: "attack(Direct-Fire Mortar: Point-Blank Bombardment DMG)"
+  - electro: attack(Electro DMG Bonus)
+  - ssc: attack(Stellar-Conduct DMG Bonus)
+
+  - skill: skill(Skill DMG)
+  - skillShieldAtk: skill(Shield DMG Absorption)
+  - skillShieldFlat: skill(Shield DMG Absorption|1)
+
+  - burst: burst(Skill DMG)
+  - burstDot: burst(Thunderburst Shell DMG)
+
+docs:
+  frames:
+
+abilities:
+  - name: attack
+
+  - name: charge
+    note: Need to use attack right before charge.
+
+  - name: skill
+    params:
+      hold: 0 for Tap (default), 1 for Hold.
+
+  - name: burst

@@ -115,6 +115,7 @@ import (
 	_ "github.com/genshinsim/gcsim/internal/characters/traveler/hydro/lumine"
 	_ "github.com/genshinsim/gcsim/internal/characters/traveler/pyro/aether"
 	_ "github.com/genshinsim/gcsim/internal/characters/traveler/pyro/lumine"
+	_ "github.com/genshinsim/gcsim/internal/characters/valeriy"
 	_ "github.com/genshinsim/gcsim/internal/characters/varesa"
 	_ "github.com/genshinsim/gcsim/internal/characters/varka"
 	_ "github.com/genshinsim/gcsim/internal/characters/venti"

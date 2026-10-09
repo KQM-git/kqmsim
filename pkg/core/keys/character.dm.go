@@ -154,6 +154,7 @@ const (
 	Tartaglia                     // tartaglia
 	Thoma                         // thoma
 	Tighnari                      // tighnari
+	Valeriy                       // valeriy
 	Varesa                        // varesa
 	Varka                         // varka
 	Venti                         // venti
@@ -292,6 +293,7 @@ var _CharNames = [...]string{
 	"tartaglia",
 	"thoma",
 	"tighnari",
+	"valeriy",
 	"varesa",
 	"varka",
 	"venti",
@@ -430,6 +432,7 @@ var _CharValues = [...]Char{
 	Tartaglia,
 	Thoma,
 	Tighnari,
+	Valeriy,
 	Varesa,
 	Varka,
 	Venti,

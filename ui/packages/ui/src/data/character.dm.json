@@ -1885,6 +1885,23 @@
         "burst_energy_cost": 40
       }
     },
+    "valeriy": {
+      "id": 10000137,
+      "sub_id": 13701,
+      "key": "valeriy",
+      "rarity": "QUALITY_PURPLE",
+      "body": "BODY_MALE",
+      "region": "ASSOC_TYPE_SNEZHNAYA",
+      "element": "Electric",
+      "weapon_class": "WEAPON_SWORD_ONE_HAND",
+      "icon_name": "UI_AvatarIcon_Valeriy",
+      "skill_details": {
+        "skill": 30602,
+        "burst": 30605,
+        "attack": 30601,
+        "burst_energy_cost": 60
+      }
+    },
     "varesa": {
       "id": 10000111,
       "sub_id": 11101,

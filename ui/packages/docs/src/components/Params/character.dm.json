@@ -1957,6 +1957,13 @@
       "desc": "Projectile travel time. Default 0 frames."
     }
   ],
+  "valeriy": [
+    {
+      "ability": "skill",
+      "param": "hold",
+      "desc": "0 for Tap (default), 1 for Hold."
+    }
+  ],
   "varesa": [
     {
       "ability": "low_plunge",

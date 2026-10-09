@@ -235,6 +235,7 @@ ace.define(
         'childe',
         'thoma',
         'tighnari',
+        'valeriy',
         'varesa',
         'varka',
         'venti',

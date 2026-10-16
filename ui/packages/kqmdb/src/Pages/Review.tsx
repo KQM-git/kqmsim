@@ -18,11 +18,28 @@ import {
 
 type Access = { authorization: string; reviewer: string };
 type Decision = { action: "approve" | "reject" | "replace"; entry?: db.Entry };
+type QueueFilters = {
+	status: Submission["status"];
+	sort: "newest" | "oldest";
+	search: string;
+	page: number;
+};
 
 export default function Review({ id }: { id?: string }) {
 	const [access, setAccess] = useState<Access | null>(null);
 	const [error, setError] = useState("");
 	const [busy, setBusy] = useState(false);
+	const [filters, setFilters] = useState<QueueFilters>({
+		status: "pending",
+		sort: "newest",
+		search: "",
+		page: 1,
+	});
+	const main = useRef<HTMLElement>(null);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: each review route needs its heading focused.
+	useEffect(() => {
+		if (access) main.current?.querySelector<HTMLElement>("h1")?.focus();
+	}, [id, access]);
 	async function signIn(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		const fields = new FormData(event.currentTarget);
@@ -47,7 +64,7 @@ export default function Review({ id }: { id?: string }) {
 	}
 	if (!access)
 		return (
-			<main className="submission-flow">
+			<main className="submission-flow review-flow">
 				<Link href="/database" className="flow-text-link">
 					← Browse simulations
 				</Link>
@@ -91,7 +108,7 @@ export default function Review({ id }: { id?: string }) {
 			</main>
 		);
 	return (
-		<main className="submission-flow">
+		<main ref={main} className="submission-flow review-flow">
 			<div className="flex flex-wrap items-center justify-between gap-4">
 				<Link href={id ? "/review" : "/database"} className="flow-text-link">
 					{id ? "← Review queue" : "← Browse simulations"}
@@ -108,15 +125,27 @@ export default function Review({ id }: { id?: string }) {
 			{id ? (
 				<ReviewDetail key={id} id={id} access={access} />
 			) : (
-				<ReviewQueue access={access} />
+				<ReviewQueue
+					access={access}
+					filters={filters}
+					setFilters={setFilters}
+				/>
 			)}
 		</main>
 	);
 }
 
-function ReviewQueue({ access }: { access: Access }) {
-	const [status, setStatus] = useState<Submission["status"]>("pending");
-	const [page, setPage] = useState(1);
+function ReviewQueue({
+	access,
+	filters,
+	setFilters,
+}: {
+	access: Access;
+	filters: QueueFilters;
+	setFilters: (next: QueueFilters) => void;
+}) {
+	const { status, page, sort, search } = filters;
+	const [draftSearch, setDraftSearch] = useState(search);
 	const [data, setData] = useState<{
 		data: Submission[];
 		total: number;
@@ -129,33 +158,63 @@ function ReviewQueue({ access }: { access: Access }) {
 		setData(null);
 		setError("");
 		submissionApi<{ data: Submission[]; total: number }>(
-			`/api/review/submissions?status=${status}&page=${page}`,
+			`/api/review/submissions?${new URLSearchParams({ status, page: String(page), sort, search })}`,
 			{ authorization: access.authorization, signal: controller.signal },
 		)
-			.then(setData)
+			.then((next) => {
+				if (!controller.signal.aborted) setData(next);
+			})
 			.catch((reason) => {
 				if (!controller.signal.aborted) setError(reason.message);
 			});
 		return () => controller.abort();
-	}, [status, page, access.authorization, attempt]);
+	}, [status, page, sort, search, access.authorization, attempt]);
 	return (
 		<>
 			<header className="flow-heading">
 				<p className="text-g-sm text-g-ink-dim">KQM submissions</p>
-				<h1>Review queue</h1>
+				<h1 tabIndex={-1}>Review queue</h1>
 				<p>
 					Check the saved results, compare the team, and decide what to publish.
 				</p>
 			</header>
-			<div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+			<form
+				className="queue-filters"
+				aria-label="Review queue"
+				onSubmit={(event) => {
+					event.preventDefault();
+					setFilters({ ...filters, search: draftSearch.trim(), page: 1 });
+				}}
+			>
+				<div className="queue-search">
+					<label htmlFor="queue-search">Search submissions</label>
+					<div className="queue-search-controls">
+						<Input
+							id="queue-search"
+							name="search"
+							type="search"
+							value={draftSearch}
+							maxLength={200}
+							placeholder="e.g. Ayato"
+							aria-describedby="queue-search-help"
+							onChange={(event) => setDraftSearch(event.target.value)}
+						/>
+						<Button type="submit" variant="secondary">
+							Search
+						</Button>
+					</div>
+				</div>
 				<div>
 					<label htmlFor="queue-status">Submission status</label>
 					<select
 						id="queue-status"
 						value={status}
 						onChange={(event) => {
-							setStatus(event.target.value as Submission["status"]);
-							setPage(1);
+							setFilters({
+								...filters,
+								status: event.target.value as Submission["status"],
+								page: 1,
+							});
 						}}
 					>
 						<option value="pending">Pending review</option>
@@ -163,13 +222,46 @@ function ReviewQueue({ access }: { access: Access }) {
 						<option value="rejected">Rejected</option>
 					</select>
 				</div>
-				<p role="status" className="text-g-sm text-g-ink-dim">
+				<div>
+					<label htmlFor="queue-sort">Date order</label>
+					<select
+						id="queue-sort"
+						value={sort}
+						onChange={(event) =>
+							setFilters({
+								...filters,
+								sort: event.target.value as QueueFilters["sort"],
+								page: 1,
+							})
+						}
+					>
+						<option value="newest">Newest first</option>
+						<option value="oldest">Oldest first</option>
+					</select>
+				</div>
+			</form>
+			<p id="queue-search-help" className="field-help">
+				Search by character, description, author, or submission ID.
+			</p>
+			<div className="queue-results-summary">
+				<p role="status" className="text-g-sm text-g-ink-dim tabular-nums">
 					{data
 						? `${data.total} ${data.total === 1 ? "submission" : "submissions"}`
 						: error
 							? "Queue not loaded."
 							: "Loading queue…"}
 				</p>
+				{search && !!data?.data.length && (
+					<Button
+						variant="ghost"
+						onClick={() => {
+							setDraftSearch("");
+							setFilters({ ...filters, search: "", page: 1 });
+						}}
+					>
+						Clear search
+					</Button>
+				)}
 			</div>
 			{error && (
 				<FlowError message={error} retry={() => setAttempt((n) => n + 1)} />
@@ -177,27 +269,38 @@ function ReviewQueue({ access }: { access: Access }) {
 			{data && data.data.length === 0 && (
 				<section className="flow-panel py-12 text-center">
 					<h2 className="font-g-display text-g-h2 font-semibold">
-						{status === "pending"
-							? "No submissions waiting"
-							: `No ${status} submissions`}
+						{search
+							? `No results for “${search}”`
+							: status === "pending"
+								? "No submissions waiting"
+								: `No ${status} submissions`}
 					</h2>
 					<p className="mx-auto mt-3 max-w-lg text-g-ink-dim">
-						{status === "pending"
-							? "New submissions will appear here. You can also import a pending entry with its tag helper link."
-							: "Choose another status to return to the review queue."}
+						{search
+							? "Try another search or clear it to see all submissions with this status."
+							: status === "pending"
+								? "New submissions will appear here. You can also import a pending entry with its tag helper link."
+								: "Choose another status to return to the review queue."}
 					</p>
 					<Button
 						variant="secondary"
 						className="mt-5"
 						onClick={() => {
-							setStatus("pending");
-							setPage(1);
+							setDraftSearch("");
+							setFilters({
+								...filters,
+								status: search ? status : "pending",
+								search: "",
+								page: 1,
+							});
 							setAttempt((n) => n + 1);
 						}}
 					>
-						{status === "pending"
-							? "Refresh queue"
-							: "View pending submissions"}
+						{search
+							? "Clear search"
+							: status === "pending"
+								? "Refresh queue"
+								: "View pending submissions"}
 					</Button>
 				</section>
 			)}
@@ -208,9 +311,12 @@ function ReviewQueue({ access }: { access: Access }) {
 							<div className="min-w-0 flex-1">
 								<div className="flex flex-wrap items-center gap-3">
 									<SubmissionBadge status={item.status} />
-									<span className="text-g-sm text-g-ink-dim">
+									<time
+										dateTime={new Date(item.submittedAt).toISOString()}
+										className="text-g-sm text-g-ink-dim tabular-nums"
+									>
 										{fullDate(item.submittedAt)}
-									</span>
+									</time>
 								</div>
 								<h2 className="mt-4 font-g-display text-g-h3 font-semibold">
 									<TeamNames entry={item.entry} />
@@ -253,17 +359,17 @@ function ReviewQueue({ access }: { access: Access }) {
 					<Button
 						variant="secondary"
 						disabled={page === 1}
-						onClick={() => setPage((n) => n - 1)}
+						onClick={() => setFilters({ ...filters, page: page - 1 })}
 					>
 						Previous page
 					</Button>
-					<span>
+					<span className="text-g-sm text-g-ink-dim tabular-nums">
 						Page {page} of {Math.ceil(data.total / 20)}
 					</span>
 					<Button
 						variant="secondary"
 						disabled={page * 20 >= data.total}
-						onClick={() => setPage((n) => n + 1)}
+						onClick={() => setFilters({ ...filters, page: page + 1 })}
 					>
 						Next page
 					</Button>
@@ -355,7 +461,7 @@ function ReviewDetail({ id, access }: { id: string; access: Access }) {
 	return (
 		<>
 			<header className="flow-heading">
-				<h1>Review submission</h1>
+				<h1 tabIndex={-1}>Review submission</h1>
 				<p className="font-g-mono text-g-sm break-all">{id}</p>
 			</header>
 			{error && (
@@ -369,11 +475,11 @@ function ReviewDetail({ id, access }: { id: string; access: Access }) {
 					<div className="submission-columns">
 						<SubmissionDetails data={data} />
 						{data.status === "pending" ? (
-							<aside className="flow-panel self-start">
+							<aside className="flow-panel review-decision self-start">
 								<h2 className="font-g-display text-g-h3 font-semibold">
 									Review decision
 								</h2>
-								<p className="mt-3 text-g-ink-dim">
+								<p className="mt-3 text-g-sm text-g-ink-dim">
 									Check the result and compare existing entries before you
 									publish.
 								</p>
@@ -404,7 +510,7 @@ function ReviewDetail({ id, access }: { id: string; access: Access }) {
 								id="matching-teams"
 								className="font-g-display text-g-h2 font-semibold"
 							>
-								Existing simulations with this team
+								Published simulations with this team
 							</h2>
 							<span className="text-g-sm text-g-ink-dim">
 								{data.duplicates?.length ?? 0} matches

@@ -15,6 +15,7 @@
 @source "./primitives/src";
 @source "./ui/src";
 @source "./db/src";
+@source "./kqmdb/src";
 @source "./storybook/src";
 @source "./embed/src";
 @source "./taghelper/src";

@@ -19,6 +19,70 @@ const schema = ["0001_database.sql", "0002_submissions.sql"]
 	.join("\n");
 const basic = `Basic ${btoa("reviewer:test-password-only")}`;
 
+test("review queue searches all records and sorts dates before pagination", async (t) => {
+	const { db, request } = setup(t);
+	const insert = db.prepare(
+		"INSERT INTO submissions(id,request_hash,source_url,document,status,submitted_at) VALUES(?,?,'https://gcsim.app/sh/example',?,?,?)",
+	);
+	for (let i = 1; i <= 25; i++) {
+		const id = `queue-${String(i).padStart(2, "0")}`;
+		insert.run(
+			id,
+			id,
+			JSON.stringify({
+				_id: id,
+				description: i === 1 ? "100%_energy" : "A saved rotation",
+				submitter: i === 25 ? "Test author" : "Contributor",
+				summary: { char_names: [i === 24 ? "kamisatoayato" : "razor"] },
+			}),
+			"pending",
+			i,
+		);
+	}
+	insert.run(
+		"published",
+		"published",
+		JSON.stringify({ description: "A saved rotation" }),
+		"approved",
+		30,
+	);
+	const queue = async (query = "") =>
+		(await request(`/api/review/submissions?${query}`, undefined, true)).json();
+	let response = await queue();
+	assert.equal(response.total, 25);
+	assert.equal(response.data.length, 20);
+	assert.equal(response.data[0].id, "queue-25");
+	response = await queue("sort=newest&page=2");
+	assert.deepEqual(
+		response.data.map((r) => r.id),
+		["queue-05", "queue-04", "queue-03", "queue-02", "queue-01"],
+	);
+	assert.equal((await queue("sort=oldest")).data[0].id, "queue-01");
+	for (const [search, expected] of [
+		["TEST AUTHOR", "queue-25"],
+		["Kamisato Ayato", "queue-24"],
+		["queue-23", "queue-23"],
+		["100%_", "queue-01"],
+	]) {
+		response = await queue(`search=${encodeURIComponent(search)}`);
+		assert.equal(response.total, 1);
+		assert.equal(response.data[0].id, expected);
+	}
+	assert.equal((await queue("search=not-found")).total, 0);
+	assert.equal(
+		(await queue(`search=${encodeURIComponent("' OR 1=1 --")}`)).total,
+		0,
+	);
+	assert.equal((await queue("status=approved&search=rotation")).total, 1);
+	for (const query of ["sort=invalid", "page=0", `search=${"a".repeat(201)}`]) {
+		assert.equal(
+			(await request(`/api/review/submissions?${query}`, undefined, true))
+				.status,
+			400,
+		);
+	}
+});
+
 function setup(t) {
 	const db = new DatabaseSync(":memory:");
 	db.exec(schema);

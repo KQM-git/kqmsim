@@ -551,22 +551,42 @@ export async function handleSubmissions(request, env) {
 			if (url.pathname === "/api/review/submissions") {
 				const status = url.searchParams.get("status") ?? "pending";
 				const page = Number(url.searchParams.get("page") ?? 1);
+				const sort = url.searchParams.get("sort") ?? "newest";
+				const search = (url.searchParams.get("search") ?? "")
+					.trim()
+					.toLowerCase();
 				if (
 					!["pending", "approved", "rejected"].includes(status) ||
 					!Number.isInteger(page) ||
 					page < 1 ||
-					page > 10000
+					page > 10000 ||
+					!["newest", "oldest"].includes(sort)
 				)
 					throw new SubmissionError("Choose a valid queue page.");
+				if (search.length > 200)
+					throw new SubmissionError(
+						"Use 200 characters or fewer in your search.",
+					);
+				const parameters = [status];
+				let where = "status=?";
+				if (search) {
+					where += ` AND (instr(lower(id),?) > 0
+						OR instr(lower(COALESCE(json_extract(document,'$.description'),'')),?) > 0
+						OR instr(lower(COALESCE(json_extract(document,'$.submitter'),'')),?) > 0
+						OR EXISTS (SELECT 1 FROM json_each(document,'$.summary.char_names')
+							WHERE instr(lower(value),?) > 0))`;
+					parameters.push(search, search, search, search.replace(/\s+/g, ""));
+				}
+				const direction = sort === "oldest" ? "ASC" : "DESC";
 				const { results } = await env.DB.prepare(
-					"SELECT * FROM submissions WHERE status=? ORDER BY submitted_at ASC,id LIMIT 20 OFFSET ?",
+					`SELECT * FROM submissions WHERE ${where} ORDER BY submitted_at ${direction},id ${direction} LIMIT 20 OFFSET ?`,
 				)
-					.bind(status, (page - 1) * 20)
+					.bind(...parameters, (page - 1) * 20)
 					.all();
 				const total = await env.DB.prepare(
-					"SELECT COUNT(*) AS count FROM submissions WHERE status=?",
+					`SELECT COUNT(*) AS count FROM submissions WHERE ${where}`,
 				)
-					.bind(status)
+					.bind(...parameters)
 					.first();
 				return json({
 					data: results.map((r) => submission(r, true)),

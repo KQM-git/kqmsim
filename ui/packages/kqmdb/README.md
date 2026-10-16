@@ -56,6 +56,9 @@ https://sim.kqm.gg/simulator.
 - Reviewers can check characters, gear, DPS, and saved results; compare published
   entries with the same team; then approve, reject, or replace an entry. Reject
   and replace require a note. Each action has a confirmation dialog.
+- The review queue searches all submissions by character, description, author,
+  or ID. Date order defaults to newest first. Search, status, date order, and
+  page are kept when returning from a review in the same session.
 - Approval adds the saved simulation to the public database. Replacement retains
   the existing viewer ID and tags. The previous entry is retained in
   `submissions.previous_document`. Rejection retains the submission and note.
@@ -165,6 +168,7 @@ From `ui`:
 pnpm --filter @gcsim/kqmdb typecheck
 pnpm --filter @gcsim/kqmdb test:worker
 pnpm --filter @gcsim/kqmdb build
+pnpm --filter @gcsim/e2e exec playwright test --config playwright.kqmdb.config.ts
 ```
 
 Keep the repository license and source notices. The site footer links to this

@@ -122,7 +122,7 @@
 		"total_dps": "总DPS：",
 		"type_to_search": "搜索…",
 		"weapon": "武器",
-		"showing_simulations": "显示 {{i}} 个模拟",
+		"showing_simulations": "显示 {{i}} / {{total}} 个模拟",
 		"simMode": "模拟模式",
 		"targetCount": "目标数",
 		"dpsPerTarget": "每个目标的DPS",

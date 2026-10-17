@@ -121,7 +121,7 @@ export async function installDbRoutes(page: Page): Promise<void> {
 				: dbEntries;
 		route.fulfill({
 			contentType: "application/json",
-			body: JSON.stringify({ data }),
+			body: JSON.stringify({ data, count: data.length }),
 		});
 	});
 }

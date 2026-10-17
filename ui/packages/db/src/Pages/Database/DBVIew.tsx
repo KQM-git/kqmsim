@@ -7,6 +7,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { ListView } from "../../SharedComponents/ListView";
 
 type Props = {
+	totalCount: number;
 	data: db.Entry[];
 	fetchData: () => void;
 	hasMore: boolean;
@@ -16,7 +17,7 @@ export const DBView = (props: Props) => {
 	const { t } = useTranslation();
 	return (
 		<div className="mx-auto flex max-w-[1160px] flex-col gap-g-base-lg px-8 py-4">
-			<ActionBar simCount={props.data.length} />
+			<ActionBar simCount={props.data.length} totalCount={props.totalCount} />
 			<RiskWarning />
 			<Warning
 				hideKey="hide-warning-db"

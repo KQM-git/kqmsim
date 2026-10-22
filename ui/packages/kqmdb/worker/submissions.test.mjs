@@ -12,7 +12,11 @@ const result = JSON.parse(
 		"utf8",
 	),
 );
-const schema = ["0001_database.sql", "0002_submissions.sql"]
+const schema = [
+	"0001_database.sql",
+	"0002_submissions.sql",
+	"0004_simulation_deletions.sql",
+]
 	.map((name) =>
 		readFileSync(new URL(`../migrations/${name}`, import.meta.url), "utf8"),
 	)
@@ -402,6 +406,111 @@ test("replacement keeps the viewer ID and old entry, and source sync cannot over
 		"local",
 	);
 	assert.ok(env.FILES);
+});
+
+test("reviewers can delete a published simulation without losing its review or result", async (t) => {
+	const { db, request, create, files } = setup(t);
+	const created = await create();
+	await request(
+		`/api/review/submissions/${created.id}/decision`,
+		{ action: "approve" },
+		true,
+	);
+	const path = `/api/review/simulations/${created.id}`;
+	assert.equal((await request(path)).status, 401);
+	const detail = await request(path, undefined, true);
+	assert.equal(detail.status, 200);
+	const record = await detail.json();
+	const body = { reason: "Approved in error.", version: record.version };
+	assert.equal((await request(`${path}/delete`, body)).status, 401);
+	assert.equal(
+		(
+			await request(`${path}/delete`, body, true, {
+				Origin: "https://other.example",
+			})
+		).status,
+		403,
+	);
+	assert.equal(
+		(await request(`${path}/delete`, { ...body, reason: "" }, true)).status,
+		400,
+	);
+	assert.equal(
+		(await request(`${path}/delete`, { ...body, version: "stale" }, true))
+			.status,
+		409,
+	);
+	assert.equal((await request(`/api/db/id/${created.id}`)).status, 200);
+	const removed = await request(`${path}/delete`, body, true);
+	assert.equal(removed.status, 200);
+	const saved = await removed.json();
+	assert.ok(saved.deletedAt);
+	assert.equal(saved.deletedBy, "reviewer");
+	assert.equal(saved.deletionReason, body.reason);
+	assert.equal((await request(`/api/db/id/${created.id}`)).status, 404);
+	assert.equal((await request(`/api/share/db/${created.id}`)).status, 404);
+	assert.deepEqual((await (await request("/api/db")).json()).data, []);
+	assert.equal((await (await request("/api/status")).json()).simulations, 0);
+	assert.equal(db.prepare("SELECT COUNT(*) AS n FROM simulations").get().n, 1);
+	assert.ok(files.size);
+	const receipt = await (
+		await request(`/api/submissions/${created.id}`)
+	).json();
+	assert.equal(receipt.status, "approved");
+	assert.equal(receipt.publishedDeletedAt, saved.deletedAt);
+	assert.deepEqual(
+		await (await request(`${path}/delete`, body, true)).json(),
+		saved,
+	);
+});
+
+test("deleted upstream simulations stay deleted after sync and cannot be replaced", async (t) => {
+	const { db, request, create } = setup(t);
+	const created = await create();
+	const entries = ["deleted", "retained"].map((id) => ({
+		...created.entry,
+		_id: id,
+		is_db_valid: true,
+	}));
+	const sync = () =>
+		db
+			.prepare(UPSERT)
+			.run({ 1: JSON.stringify(entries), 2: Date.now(), 3: "sync" });
+	sync();
+	const detail = await request(
+		"/api/review/simulations/deleted",
+		undefined,
+		true,
+	);
+	assert.equal(detail.status, 200);
+	const record = await detail.json();
+	assert.equal(
+		(
+			await request(
+				"/api/review/simulations/deleted/delete",
+				{ reason: "Invalid assumptions.", version: record.version },
+				true,
+			)
+		).status,
+		200,
+	);
+	sync();
+	assert.equal((await request("/api/db/id/deleted")).status, 404);
+	assert.equal((await request("/api/db/id/retained")).status, 200);
+	assert.equal(
+		(
+			await request(
+				`/api/review/submissions/${created.id}/decision`,
+				{ action: "replace", replaceId: "deleted", reason: "New rotation." },
+				true,
+			)
+		).status,
+		409,
+	);
+	assert.equal(
+		(await request("/api/review/simulations/missing", undefined, true)).status,
+		404,
+	);
 });
 
 test("two competing review decisions produce one winner", async (t) => {

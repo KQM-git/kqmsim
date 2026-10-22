@@ -96,6 +96,115 @@ async function setup(page: Page) {
 	return { queries, behavior, decisions };
 }
 
+test("reviewers confirm a deletion, handle conflicts, and see the removed state", async ({
+	page,
+}) => {
+	await setup(page);
+	const published = { ...record, status: "approved", publishedId: entry._id };
+	await page.route("**/api/review/submissions/kqm-test", (route) =>
+		route.fulfill({ json: published }),
+	);
+	const managed = {
+		id: entry._id,
+		entry,
+		version: "original-version",
+		deletedAt: null as number | null,
+		deletedBy: null as string | null,
+		deletionReason: null as string | null,
+	};
+	const deletions: { reason: string; version: string }[] = [];
+	let conflict = true;
+	await page.route("**/api/review/simulations/kqm-test**", (route) => {
+		if (route.request().method() === "POST") {
+			deletions.push(route.request().postDataJSON());
+			if (conflict)
+				return route.fulfill({
+					status: 409,
+					json: {
+						error:
+							"This simulation changed. Reload the page before you delete it.",
+					},
+				});
+			managed.deletedAt = 1790000000000;
+			managed.deletedBy = "reviewer";
+			managed.deletionReason = deletions.at(-1)?.reason ?? "";
+		}
+		return route.fulfill({ json: managed });
+	});
+	await page.getByRole("link", { name: /Open review/ }).click();
+	await page
+		.getByRole("link", { name: "Manage published simulation", exact: true })
+		.click();
+	await expect(
+		page.getByRole("heading", { name: "Manage simulation", exact: true }),
+	).toBeFocused();
+	await page.setViewportSize({ width: 320, height: 800 });
+	const remove = page.getByRole("button", {
+		name: "Delete simulation",
+		exact: true,
+	});
+	await remove.click();
+	await expect(page.getByLabel("Deletion reason (required)")).toBeFocused();
+	await expect(page.getByRole("dialog")).not.toBeVisible();
+	expect(deletions).toHaveLength(0);
+	await page
+		.getByLabel("Deletion reason (required)")
+		.fill("Approved in error.");
+	await remove.click();
+	const dialog = page.getByRole("dialog", { name: "Delete this simulation?" });
+	await expect(dialog).toContainText("kqm-test");
+	await expect(dialog).toContainText("Razor");
+	await expect(dialog).toContainText("Approved in error.");
+	expect(
+		await page.evaluate(
+			() => document.documentElement.scrollWidth <= innerWidth,
+		),
+	).toBe(true);
+	await page.keyboard.press("Escape");
+	await expect(remove).toBeFocused();
+	expect(deletions).toHaveLength(0);
+	await page.setViewportSize({ width: 1280, height: 900 });
+	await page.evaluate(() => {
+		document.documentElement.style.fontSize = "200%";
+	});
+	await remove.click();
+	expect(
+		await page.evaluate(
+			() => document.documentElement.scrollWidth <= innerWidth,
+		),
+	).toBe(true);
+	await dialog
+		.getByRole("button", { name: "Delete simulation", exact: true })
+		.click();
+	await expect(dialog.getByRole("alert")).toContainText(
+		"This simulation changed.",
+	);
+	await expect(
+		dialog.getByRole("button", { name: "Delete simulation", exact: true }),
+	).toBeDisabled();
+	conflict = false;
+	managed.version = "updated-version";
+	await dialog.getByRole("button", { name: "Try again", exact: true }).click();
+	await expect(dialog).not.toBeVisible();
+	await remove.click();
+	await dialog
+		.getByRole("button", { name: "Delete simulation", exact: true })
+		.click();
+	await expect(
+		page.getByRole("heading", { name: "Simulation deleted", exact: true }),
+	).toBeFocused();
+	await expect(
+		page.getByText("This simulation is no longer in the public database.", {
+			exact: false,
+		}),
+	).toBeVisible();
+	await expect(remove).not.toBeVisible();
+	expect(deletions).toEqual([
+		{ reason: "Approved in error.", version: "original-version" },
+		{ reason: "Approved in error.", version: "updated-version" },
+	]);
+});
+
 test("search, date order, and pagination persist through a review", async ({
 	page,
 }) => {

@@ -15,6 +15,7 @@ import {
 	SubmissionDetails,
 	TeamNames,
 } from "../SharedComponents/SubmissionDetails";
+import ManageSimulation from "./ManageSimulation";
 
 type Access = { authorization: string; reviewer: string };
 type Decision = { action: "approve" | "reject" | "replace"; entry?: db.Entry };
@@ -25,7 +26,13 @@ type QueueFilters = {
 	page: number;
 };
 
-export default function Review({ id }: { id?: string }) {
+export default function Review({
+	id,
+	simulationId,
+}: {
+	id?: string;
+	simulationId?: string;
+}) {
 	const [access, setAccess] = useState<Access | null>(null);
 	const [error, setError] = useState("");
 	const [busy, setBusy] = useState(false);
@@ -39,7 +46,7 @@ export default function Review({ id }: { id?: string }) {
 	// biome-ignore lint/correctness/useExhaustiveDependencies: each review route needs its heading focused.
 	useEffect(() => {
 		if (access) main.current?.querySelector<HTMLElement>("h1")?.focus();
-	}, [id, access]);
+	}, [id, simulationId, access]);
 	async function signIn(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		const fields = new FormData(event.currentTarget);
@@ -110,8 +117,11 @@ export default function Review({ id }: { id?: string }) {
 	return (
 		<main ref={main} className="submission-flow review-flow">
 			<div className="flex flex-wrap items-center justify-between gap-4">
-				<Link href={id ? "/review" : "/database"} className="flow-text-link">
-					{id ? "← Review queue" : "← Browse simulations"}
+				<Link
+					href={id || simulationId ? "/review" : "/database"}
+					className="flow-text-link"
+				>
+					{id || simulationId ? "← Review queue" : "← Browse simulations"}
 				</Link>
 				<div className="flex flex-wrap items-center gap-3 text-g-sm text-g-ink-dim">
 					<span>
@@ -122,7 +132,13 @@ export default function Review({ id }: { id?: string }) {
 					</Button>
 				</div>
 			</div>
-			{id ? (
+			{simulationId ? (
+				<ManageSimulation
+					key={simulationId}
+					id={simulationId}
+					authorization={access.authorization}
+				/>
+			) : id ? (
 				<ReviewDetail key={id} id={id} access={access} />
 			) : (
 				<ReviewQueue
@@ -177,6 +193,9 @@ function ReviewQueue({
 				<p>
 					Check the saved results, compare the team, and decide what to publish.
 				</p>
+				<Link href="/database" className="flow-text-link">
+					Manage published simulations →
+				</Link>
 			</header>
 			<form
 				className="queue-filters"
@@ -501,7 +520,16 @@ function ReviewDetail({ id, access }: { id: string; access: Access }) {
 								</p>
 							</aside>
 						) : (
-							<DecisionSummary data={data} />
+							<div className="self-start">
+								<DecisionSummary data={data} />
+								{data.publishedId && (
+									<Button variant="outline" className="mt-4" asChild>
+										<Link href={`/review/simulations/${data.publishedId}`}>
+											Manage published simulation
+										</Link>
+									</Button>
+								)}
+							</div>
 						)}
 					</div>
 					<section className="mt-10" aria-labelledby="matching-teams">

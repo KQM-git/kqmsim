@@ -65,6 +65,11 @@ export default function Results({
 				<h1 className="font-g-display text-g-h2 font-bold">
 					Simulation results
 				</h1>
+				{!submission && (
+					<Link href={`/review/simulations/${id}`} className="text-g-accent">
+						Manage simulation
+					</Link>
+				)}
 			</div>
 			{error ? (
 				<div role="alert" className="rounded-g-lg border border-g-danger p-6">

@@ -65,3 +65,34 @@ browser zoom. The 200% test changes the root text size; it is not browser zoom.
 
 Approve for the inspected scope. No HIGH findings remain. All six domains were
 reviewed. The verification limits above still apply.
+
+## Simulation deletion — 23 October 2026
+
+Scope: the protected simulation management page, its deletion confirmation,
+and its loading, error, conflict, and deleted states. The existing KQM tokens,
+native dialog, buttons, and review layout are reused. Other pages were not
+part of this additional interface check.
+
+| Domain | Evidence inspected | Result |
+| --- | --- | --- |
+| Accessibility | `src/Pages/ManageSimulation.tsx`; dialog name, Cancel focus, Escape, focus after deletion, required note | Pass in the browser and focused UI test |
+| Layout | Management page and dialog at 320 pixels and with 200% text | Controls remain available; no horizontal overflow |
+| Writing | Reason, confirmation, record ID, conflict reload, removed-state message | The action and its effect are explicit |
+| Typography | Existing review heading and body tokens; long reason and ID wrapping | Consistent with the review flow |
+| Colors | Existing KQM text, focus, form-border, and destructive-button tokens; browser screenshot | No new color values introduced |
+| UI polish | Existing panels and buttons; native dialog; busy and disabled states | Reused without new animation |
+
+Findings: no unresolved issue in the inspected flow. The delete action requires
+a reason and a separate confirmation. The confirmation identifies the team and
+record. Conflicting edits block deletion and provide a reload action.
+
+Verification: typecheck; 23 Worker tests; four UI tests, including a deletion
+test with confirmation, conflict recovery, Escape, and narrow and enlarged
+text; production build; deployment dry run. Browser testing against the local
+Worker and local D1 completed an actual deletion of a disposable test record.
+Public list, metadata, and result API checks confirmed the removal. The archive
+import SQL was also executed against a local database to check that it cannot
+restore a deleted record.
+
+Verdict: approve for this flow. A full screen-reader speech test and native
+browser zoom were not run. The 200% check changes the root text size.

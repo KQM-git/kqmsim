@@ -125,7 +125,7 @@ export default {
 				return new Response(await loadResult(entry, env), {
 					headers: {
 						"Content-Type": "application/json",
-						"Cache-Control": "public, max-age=300",
+						"Cache-Control": "no-store",
 						"X-Content-Type-Options": "nosniff",
 					},
 				});

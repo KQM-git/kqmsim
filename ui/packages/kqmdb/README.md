@@ -63,6 +63,16 @@ https://sim.kqm.gg/simulator.
   the existing viewer ID and tags. The previous entry is retained in
   `submissions.previous_document`. Rejection retains the submission and note.
   Decisions are atomic: a second reviewer cannot overwrite a completed review.
+- To delete a published simulation, open its result viewer and select **Manage
+  simulation**, or select **Manage published simulation** from an approved
+  review. Sign in, enter a reason, and confirm the team and simulation ID.
+  `/review/simulations/<id>` also opens this protected page directly.
+- Deletion sets `simulations.visible=0` and records `deleted_at`, `deleted_by`,
+  and `deletion_reason`. Public searches, card feeds, and database viewer APIs
+  stop returning the entry. Imports cannot restore it. The document, saved
+  result, and review history remain available for administrator recovery.
+  A changed record returns a conflict instead of deleting a newer version.
+  Apply migration `0004_simulation_deletions.sql` before deploying this feature.
 - The queue can import an existing `taghelper.simpact.app/id/<id>` link. Import
   keeps the author, description, and completed result. It does not change the
   original Discord queue. The upstream public API does not list pending entries,

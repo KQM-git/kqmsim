@@ -14,6 +14,7 @@ function setup(t) {
 		"0001_database.sql",
 		"0002_submissions.sql",
 		"0003_upgrades.sql",
+		"0004_simulation_deletions.sql",
 	])
 		sqlite.exec(
 			readFileSync(new URL(`../migrations/${name}`, import.meta.url), "utf8"),
@@ -77,7 +78,7 @@ test("upgrade keeps review data, records recovery history, and rejects stale wri
 	const original = JSON.stringify(entry());
 	sqlite
 		.prepare(
-			"INSERT INTO simulations VALUES (?,?,1700000000,1,90,0,'before',1,'archive')",
+			"INSERT INTO simulations(id,document,create_date,dps,duration,imported_at,seen_run,visible,source) VALUES (?,?,1700000000,1,90,0,'before',1,'archive')",
 		)
 		.run("entry-1", original);
 	const result = { ...fixture, sim_version: "a".repeat(40), modified: false };

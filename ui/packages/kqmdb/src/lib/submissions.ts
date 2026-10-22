@@ -9,6 +9,7 @@ export type Submission = {
 	reviewedBy?: string;
 	reason: string;
 	publishedId: string | null;
+	publishedDeletedAt?: number | null;
 	entry: db.Entry;
 	duplicates?: db.Entry[];
 };

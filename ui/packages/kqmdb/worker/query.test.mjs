@@ -20,6 +20,10 @@ const schema =
 	readFileSync(
 		new URL("../migrations/0002_submissions.sql", import.meta.url),
 		"utf8",
+	) +
+	readFileSync(
+		new URL("../migrations/0004_simulation_deletions.sql", import.meta.url),
+		"utf8",
 	);
 db.exec(schema);
 const entry = (id, names, tags, dps, description = "Team") => ({

@@ -276,15 +276,18 @@ function submission(row, internal = false) {
 		reviewedAt: row.reviewed_at,
 		reason: row.reason,
 		publishedId: row.published_id,
+		publishedDeletedAt: row.published_deleted_at ?? null,
 		entry: JSON.parse(row.document),
 		...(internal ? { reviewedBy: row.reviewed_by } : {}),
 	};
 }
 
 async function getSubmission(id, env) {
-	const row = await env.DB.prepare("SELECT * FROM submissions WHERE id=?")
-		.bind(id)
-		.first();
+	const row =
+		await env.DB.prepare(`SELECT submissions.*, simulations.deleted_at AS published_deleted_at
+		FROM submissions LEFT JOIN simulations ON simulations.id=submissions.published_id WHERE submissions.id=?`)
+			.bind(id)
+			.first();
 	if (!row)
 		throw new SubmissionError(
 			"This submission was not found. Check the saved link or submit it again.",
@@ -482,7 +485,8 @@ async function decide(id, input, user, env) {
 			SELECT ?1,?2,?3,?4,?5,?6,'local',1,'local' FROM submissions WHERE id=?7 AND status='pending'
 			AND (?8 IS NULL OR EXISTS (SELECT 1 FROM simulations WHERE id=?1 AND document=?8 AND visible=1))
 			ON CONFLICT(id) DO UPDATE SET document=excluded.document,create_date=excluded.create_date,
-			dps=excluded.dps,duration=excluded.duration,imported_at=excluded.imported_at,seen_run='local',visible=1,source='local'`).bind(
+			dps=excluded.dps,duration=excluded.duration,imported_at=excluded.imported_at,seen_run='local',visible=1,source='local'
+			WHERE simulations.deleted_at IS NULL`).bind(
 				target,
 				JSON.stringify(published),
 				published.create_date,
@@ -515,6 +519,59 @@ async function decide(id, input, user, env) {
 	return submission(await getSubmission(id, env), true);
 }
 
+async function managedSimulation(id, env) {
+	const row = await env.DB.prepare(
+		"SELECT * FROM simulations WHERE id=? AND (visible=1 OR deleted_at IS NOT NULL)",
+	)
+		.bind(id)
+		.first();
+	if (!row)
+		throw new SubmissionError(
+			"This simulation was not found. Check the database link.",
+			404,
+		);
+	return row;
+}
+
+async function simulationRecord(row) {
+	return {
+		id: row.id,
+		entry: JSON.parse(row.document),
+		version: await hash(row.document),
+		deletedAt: row.deleted_at,
+		deletedBy: row.deleted_by,
+		deletionReason: row.deletion_reason,
+	};
+}
+
+async function deleteSimulation(id, input, user, env) {
+	const row = await managedSimulation(id, env);
+	if (row.deleted_at) return simulationRecord(row);
+	const reason = textField(
+		input.reason,
+		"reason",
+		"a deletion reason",
+		3,
+		2000,
+	);
+	if (input.version !== (await hash(row.document)))
+		throw new SubmissionError(
+			"This simulation changed. Reload the page before you delete it.",
+			409,
+		);
+	const result =
+		await env.DB.prepare(`UPDATE simulations SET visible=0,deleted_at=?,deleted_by=?,deletion_reason=?
+		WHERE id=? AND document=? AND visible=1 AND deleted_at IS NULL`)
+			.bind(Date.now(), user, reason, id, row.document)
+			.run();
+	if (!result.meta.changes)
+		throw new SubmissionError(
+			"This simulation changed. Reload the page to check its status.",
+			409,
+		);
+	return simulationRecord(await managedSimulation(id, env));
+}
+
 export async function handleSubmissions(request, env) {
 	const url = new URL(request.url);
 	try {
@@ -528,6 +585,11 @@ export async function handleSubmissions(request, env) {
 			return json({ reviewer: user });
 		if (request.method === "POST") {
 			const input = await readBody(request);
+			const deletion = url.pathname.match(
+				/^\/api\/review\/simulations\/([a-zA-Z0-9_-]{1,128})\/delete$/,
+			);
+			if (deletion)
+				return json(await deleteSimulation(deletion[1], input, user, env));
 			if (
 				url.pathname === "/api/submissions" ||
 				url.pathname === "/api/review/import"
@@ -548,6 +610,13 @@ export async function handleSubmissions(request, env) {
 			if (decision) return json(await decide(decision[1], input, user, env));
 		}
 		if (request.method === "GET") {
+			const simulation = url.pathname.match(
+				/^\/api\/review\/simulations\/([a-zA-Z0-9_-]{1,128})$/,
+			);
+			if (simulation)
+				return json(
+					await simulationRecord(await managedSimulation(simulation[1], env)),
+				);
 			if (url.pathname === "/api/review/submissions") {
 				const status = url.searchParams.get("status") ?? "pending";
 				const page = Number(url.searchParams.get("page") ?? 1);

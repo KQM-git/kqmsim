@@ -74,6 +74,19 @@ export default function App() {
 						</Suspense>
 					)}
 				</Route>
+				<Route path="/review/simulations/:id">
+					{({ id }) => (
+						<Suspense
+							fallback={
+								<p className="p-8" role="status">
+									Loading review page…
+								</p>
+							}
+						>
+							<Review simulationId={id} />
+						</Suspense>
+					)}
+				</Route>
 				<Route path="/review/:id?">
 					{({ id }) => (
 						<Suspense

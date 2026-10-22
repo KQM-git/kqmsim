@@ -10,7 +10,8 @@ export const UPSERT = `INSERT INTO simulations
   ON CONFLICT(id) DO UPDATE SET document=excluded.document,
     create_date=excluded.create_date, dps=excluded.dps,
     duration=excluded.duration, imported_at=excluded.imported_at,
-    seen_run=excluded.seen_run, visible=1 WHERE simulations.source='upstream'`;
+    seen_run=excluded.seen_run, visible=1
+    WHERE simulations.source='upstream' AND simulations.deleted_at IS NULL`;
 
 export function validateEntries(entries) {
 	if (!Array.isArray(entries) || entries.length > 100)

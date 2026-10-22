@@ -151,12 +151,18 @@ export function DecisionSummary({ data }: { data: Submission }) {
 				tabIndex={-1}
 				className="font-g-display text-g-h3 font-semibold"
 			>
-				{data.status === "approved" ? "Published to KQM" : "Review decision"}
+				{data.publishedDeletedAt
+					? "Removed from database"
+					: data.status === "approved"
+						? "Published to KQM"
+						: "Review decision"}
 			</h2>
 			<p className="mt-2 text-g-ink-dim">
-				{data.status === "approved"
-					? "This simulation is now in the public database."
-					: "This submission was not added to the database. Use the review note to prepare a new submission."}
+				{data.publishedDeletedAt
+					? "A reviewer removed this simulation from the public database. The original review is kept below."
+					: data.status === "approved"
+						? "This simulation is now in the public database."
+						: "This submission was not added to the database. Use the review note to prepare a new submission."}
 			</p>
 			{data.reason && (
 				<div className="mt-4 rounded-g-md bg-g-surface-2 p-4">
@@ -171,7 +177,7 @@ export function DecisionSummary({ data }: { data: Submission }) {
 				</p>
 			)}
 			<div className="mt-5">
-				{data.publishedId ? (
+				{data.publishedId && !data.publishedDeletedAt ? (
 					<Button asChild>
 						<Link href={`/db/${data.publishedId}`}>
 							View published simulation

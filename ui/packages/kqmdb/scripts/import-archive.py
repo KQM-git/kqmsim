@@ -59,7 +59,7 @@ def make_sql(entries, archive_hash, now):
             statements.append(f"""INSERT INTO simulations(id,document,create_date,dps,duration,imported_at,seen_run,visible,source)
 VALUES({record_id},{doc},{int(entry['create_date'])},{entry['summary']['mean_dps_per_target']},{entry['summary']['sim_duration']['mean']},{now},{quoted(archive_hash)},1,'archive')
 ON CONFLICT(id) DO UPDATE SET document=excluded.document,create_date=excluded.create_date,dps=excluded.dps,duration=excluded.duration,imported_at=excluded.imported_at,seen_run=excluded.seen_run,visible=1,source='archive'
-WHERE simulations.source='upstream' AND COALESCE(json_extract(simulations.document,'$.last_update'),0) <= COALESCE(json_extract(excluded.document,'$.last_update'),0);""")
+WHERE simulations.source='upstream' AND simulations.deleted_at IS NULL AND COALESCE(json_extract(simulations.document,'$.last_update'),0) <= COALESCE(json_extract(excluded.document,'$.last_update'),0);""")
         else:
             digest = hashlib.sha256(document.encode()).hexdigest()
             statements.append(f"""INSERT INTO submissions(id,request_hash,source_url,document,status,submitted_at)

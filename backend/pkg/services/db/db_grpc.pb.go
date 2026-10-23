@@ -24,6 +24,7 @@ const (
 	DBStore_GetOne_FullMethodName                 = "/db.DBStore/GetOne"
 	DBStore_GetPending_FullMethodName             = "/db.DBStore/GetPending"
 	DBStore_GetBySubmitter_FullMethodName         = "/db.DBStore/GetBySubmitter"
+	DBStore_Count_FullMethodName                  = "/db.DBStore/Count"
 	DBStore_ApproveTag_FullMethodName             = "/db.DBStore/ApproveTag"
 	DBStore_RejectTag_FullMethodName              = "/db.DBStore/RejectTag"
 	DBStore_RejectTagAllUnapproved_FullMethodName = "/db.DBStore/RejectTagAllUnapproved"
@@ -47,6 +48,8 @@ type DBStoreClient interface {
 	GetOne(ctx context.Context, in *GetOneRequest, opts ...grpc.CallOption) (*GetOneResponse, error)
 	GetPending(ctx context.Context, in *GetPendingRequest, opts ...grpc.CallOption) (*GetPendingResponse, error)
 	GetBySubmitter(ctx context.Context, in *GetBySubmitterRequest, opts ...grpc.CallOption) (*GetBySubmitterResponse, error)
+	// gets total entry count for a given query
+	Count(ctx context.Context, in *CountRequest, opts ...grpc.CallOption) (*CountResponse, error)
 	// tagging
 	ApproveTag(ctx context.Context, in *ApproveTagRequest, opts ...grpc.CallOption) (*ApproveTagResponse, error)
 	RejectTag(ctx context.Context, in *RejectTagRequest, opts ...grpc.CallOption) (*RejectTagResponse, error)
@@ -116,6 +119,16 @@ func (c *dBStoreClient) GetBySubmitter(ctx context.Context, in *GetBySubmitterRe
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetBySubmitterResponse)
 	err := c.cc.Invoke(ctx, DBStore_GetBySubmitter_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dBStoreClient) Count(ctx context.Context, in *CountRequest, opts ...grpc.CallOption) (*CountResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CountResponse)
+	err := c.cc.Invoke(ctx, DBStore_Count_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -242,6 +255,8 @@ type DBStoreServer interface {
 	GetOne(context.Context, *GetOneRequest) (*GetOneResponse, error)
 	GetPending(context.Context, *GetPendingRequest) (*GetPendingResponse, error)
 	GetBySubmitter(context.Context, *GetBySubmitterRequest) (*GetBySubmitterResponse, error)
+	// gets total entry count for a given query
+	Count(context.Context, *CountRequest) (*CountResponse, error)
 	// tagging
 	ApproveTag(context.Context, *ApproveTagRequest) (*ApproveTagResponse, error)
 	RejectTag(context.Context, *RejectTagRequest) (*RejectTagResponse, error)
@@ -281,6 +296,9 @@ func (UnimplementedDBStoreServer) GetPending(context.Context, *GetPendingRequest
 }
 func (UnimplementedDBStoreServer) GetBySubmitter(context.Context, *GetBySubmitterRequest) (*GetBySubmitterResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetBySubmitter not implemented")
+}
+func (UnimplementedDBStoreServer) Count(context.Context, *CountRequest) (*CountResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Count not implemented")
 }
 func (UnimplementedDBStoreServer) ApproveTag(context.Context, *ApproveTagRequest) (*ApproveTagResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ApproveTag not implemented")
@@ -422,6 +440,24 @@ func _DBStore_GetBySubmitter_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DBStoreServer).GetBySubmitter(ctx, req.(*GetBySubmitterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DBStore_Count_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DBStoreServer).Count(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DBStore_Count_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DBStoreServer).Count(ctx, req.(*CountRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -650,6 +686,10 @@ var DBStore_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBySubmitter",
 			Handler:    _DBStore_GetBySubmitter_Handler,
+		},
+		{
+			MethodName: "Count",
+			Handler:    _DBStore_Count_Handler,
 		},
 		{
 			MethodName: "ApproveTag",

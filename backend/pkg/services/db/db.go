@@ -63,3 +63,13 @@ func (s *Server) GetBySubmitter(ctx context.Context, req *GetBySubmitterRequest)
 		},
 	}, err
 }
+
+func (s *Server) Count(ctx context.Context, req *CountRequest) (*CountResponse, error) {
+	res, err := s.DBStore.Count(ctx, req.GetQuery())
+	if err != nil {
+		return nil, err
+	}
+	return &CountResponse{
+		Count: res,
+	}, nil
+}

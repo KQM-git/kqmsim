@@ -897,6 +897,94 @@ func (x *GetAllResponse) GetData() *Entries {
 	return nil
 }
 
+type CountRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Query         *QueryOpt              `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty" bson:"query,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CountRequest) Reset() {
+	*x = CountRequest{}
+	mi := &file_protos_backend_db_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CountRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CountRequest) ProtoMessage() {}
+
+func (x *CountRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_protos_backend_db_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CountRequest.ProtoReflect.Descriptor instead.
+func (*CountRequest) Descriptor() ([]byte, []int) {
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *CountRequest) GetQuery() *QueryOpt {
+	if x != nil {
+		return x.Query
+	}
+	return nil
+}
+
+type CountResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Count         int64                  `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty" bson:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CountResponse) Reset() {
+	*x = CountResponse{}
+	mi := &file_protos_backend_db_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CountResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CountResponse) ProtoMessage() {}
+
+func (x *CountResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_protos_backend_db_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CountResponse.ProtoReflect.Descriptor instead.
+func (*CountResponse) Descriptor() ([]byte, []int) {
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *CountResponse) GetCount() int64 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
 type ApproveTagRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" bson:"id,omitempty"`
@@ -907,7 +995,7 @@ type ApproveTagRequest struct {
 
 func (x *ApproveTagRequest) Reset() {
 	*x = ApproveTagRequest{}
-	mi := &file_protos_backend_db_proto_msgTypes[15]
+	mi := &file_protos_backend_db_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -919,7 +1007,7 @@ func (x *ApproveTagRequest) String() string {
 func (*ApproveTagRequest) ProtoMessage() {}
 
 func (x *ApproveTagRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[15]
+	mi := &file_protos_backend_db_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -932,7 +1020,7 @@ func (x *ApproveTagRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApproveTagRequest.ProtoReflect.Descriptor instead.
 func (*ApproveTagRequest) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{15}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ApproveTagRequest) GetId() string {
@@ -958,7 +1046,7 @@ type ApproveTagResponse struct {
 
 func (x *ApproveTagResponse) Reset() {
 	*x = ApproveTagResponse{}
-	mi := &file_protos_backend_db_proto_msgTypes[16]
+	mi := &file_protos_backend_db_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -970,7 +1058,7 @@ func (x *ApproveTagResponse) String() string {
 func (*ApproveTagResponse) ProtoMessage() {}
 
 func (x *ApproveTagResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[16]
+	mi := &file_protos_backend_db_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -983,7 +1071,7 @@ func (x *ApproveTagResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApproveTagResponse.ProtoReflect.Descriptor instead.
 func (*ApproveTagResponse) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{16}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ApproveTagResponse) GetId() string {
@@ -1003,7 +1091,7 @@ type RejectTagRequest struct {
 
 func (x *RejectTagRequest) Reset() {
 	*x = RejectTagRequest{}
-	mi := &file_protos_backend_db_proto_msgTypes[17]
+	mi := &file_protos_backend_db_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1015,7 +1103,7 @@ func (x *RejectTagRequest) String() string {
 func (*RejectTagRequest) ProtoMessage() {}
 
 func (x *RejectTagRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[17]
+	mi := &file_protos_backend_db_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1028,7 +1116,7 @@ func (x *RejectTagRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RejectTagRequest.ProtoReflect.Descriptor instead.
 func (*RejectTagRequest) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{17}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *RejectTagRequest) GetId() string {
@@ -1054,7 +1142,7 @@ type RejectTagResponse struct {
 
 func (x *RejectTagResponse) Reset() {
 	*x = RejectTagResponse{}
-	mi := &file_protos_backend_db_proto_msgTypes[18]
+	mi := &file_protos_backend_db_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1066,7 +1154,7 @@ func (x *RejectTagResponse) String() string {
 func (*RejectTagResponse) ProtoMessage() {}
 
 func (x *RejectTagResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[18]
+	mi := &file_protos_backend_db_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1079,7 +1167,7 @@ func (x *RejectTagResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RejectTagResponse.ProtoReflect.Descriptor instead.
 func (*RejectTagResponse) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{18}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *RejectTagResponse) GetId() string {
@@ -1098,7 +1186,7 @@ type RejectTagAllUnapprovedRequest struct {
 
 func (x *RejectTagAllUnapprovedRequest) Reset() {
 	*x = RejectTagAllUnapprovedRequest{}
-	mi := &file_protos_backend_db_proto_msgTypes[19]
+	mi := &file_protos_backend_db_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1110,7 +1198,7 @@ func (x *RejectTagAllUnapprovedRequest) String() string {
 func (*RejectTagAllUnapprovedRequest) ProtoMessage() {}
 
 func (x *RejectTagAllUnapprovedRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[19]
+	mi := &file_protos_backend_db_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1123,7 +1211,7 @@ func (x *RejectTagAllUnapprovedRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RejectTagAllUnapprovedRequest.ProtoReflect.Descriptor instead.
 func (*RejectTagAllUnapprovedRequest) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{19}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *RejectTagAllUnapprovedRequest) GetTag() model.DBTag {
@@ -1142,7 +1230,7 @@ type RejectTagAllUnapprovedResponse struct {
 
 func (x *RejectTagAllUnapprovedResponse) Reset() {
 	*x = RejectTagAllUnapprovedResponse{}
-	mi := &file_protos_backend_db_proto_msgTypes[20]
+	mi := &file_protos_backend_db_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1154,7 +1242,7 @@ func (x *RejectTagAllUnapprovedResponse) String() string {
 func (*RejectTagAllUnapprovedResponse) ProtoMessage() {}
 
 func (x *RejectTagAllUnapprovedResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[20]
+	mi := &file_protos_backend_db_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1167,7 +1255,7 @@ func (x *RejectTagAllUnapprovedResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RejectTagAllUnapprovedResponse.ProtoReflect.Descriptor instead.
 func (*RejectTagAllUnapprovedResponse) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{20}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *RejectTagAllUnapprovedResponse) GetCount() int64 {
@@ -1188,7 +1276,7 @@ type SubmitRequest struct {
 
 func (x *SubmitRequest) Reset() {
 	*x = SubmitRequest{}
-	mi := &file_protos_backend_db_proto_msgTypes[21]
+	mi := &file_protos_backend_db_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1200,7 +1288,7 @@ func (x *SubmitRequest) String() string {
 func (*SubmitRequest) ProtoMessage() {}
 
 func (x *SubmitRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[21]
+	mi := &file_protos_backend_db_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1213,7 +1301,7 @@ func (x *SubmitRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubmitRequest.ProtoReflect.Descriptor instead.
 func (*SubmitRequest) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{21}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *SubmitRequest) GetConfig() string {
@@ -1246,7 +1334,7 @@ type SubmitResponse struct {
 
 func (x *SubmitResponse) Reset() {
 	*x = SubmitResponse{}
-	mi := &file_protos_backend_db_proto_msgTypes[22]
+	mi := &file_protos_backend_db_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1258,7 +1346,7 @@ func (x *SubmitResponse) String() string {
 func (*SubmitResponse) ProtoMessage() {}
 
 func (x *SubmitResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[22]
+	mi := &file_protos_backend_db_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1271,7 +1359,7 @@ func (x *SubmitResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubmitResponse.ProtoReflect.Descriptor instead.
 func (*SubmitResponse) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{22}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *SubmitResponse) GetId() string {
@@ -1291,7 +1379,7 @@ type DeletePendingRequest struct {
 
 func (x *DeletePendingRequest) Reset() {
 	*x = DeletePendingRequest{}
-	mi := &file_protos_backend_db_proto_msgTypes[23]
+	mi := &file_protos_backend_db_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1303,7 +1391,7 @@ func (x *DeletePendingRequest) String() string {
 func (*DeletePendingRequest) ProtoMessage() {}
 
 func (x *DeletePendingRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[23]
+	mi := &file_protos_backend_db_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1316,7 +1404,7 @@ func (x *DeletePendingRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePendingRequest.ProtoReflect.Descriptor instead.
 func (*DeletePendingRequest) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{23}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *DeletePendingRequest) GetId() string {
@@ -1342,7 +1430,7 @@ type DeletePendingResponse struct {
 
 func (x *DeletePendingResponse) Reset() {
 	*x = DeletePendingResponse{}
-	mi := &file_protos_backend_db_proto_msgTypes[24]
+	mi := &file_protos_backend_db_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1354,7 +1442,7 @@ func (x *DeletePendingResponse) String() string {
 func (*DeletePendingResponse) ProtoMessage() {}
 
 func (x *DeletePendingResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[24]
+	mi := &file_protos_backend_db_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1367,7 +1455,7 @@ func (x *DeletePendingResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePendingResponse.ProtoReflect.Descriptor instead.
 func (*DeletePendingResponse) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{24}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *DeletePendingResponse) GetId() string {
@@ -1385,7 +1473,7 @@ type GetWorkRequest struct {
 
 func (x *GetWorkRequest) Reset() {
 	*x = GetWorkRequest{}
-	mi := &file_protos_backend_db_proto_msgTypes[25]
+	mi := &file_protos_backend_db_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1397,7 +1485,7 @@ func (x *GetWorkRequest) String() string {
 func (*GetWorkRequest) ProtoMessage() {}
 
 func (x *GetWorkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[25]
+	mi := &file_protos_backend_db_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1410,7 +1498,7 @@ func (x *GetWorkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWorkRequest.ProtoReflect.Descriptor instead.
 func (*GetWorkRequest) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{25}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{27}
 }
 
 type GetWorkResponse struct {
@@ -1422,7 +1510,7 @@ type GetWorkResponse struct {
 
 func (x *GetWorkResponse) Reset() {
 	*x = GetWorkResponse{}
-	mi := &file_protos_backend_db_proto_msgTypes[26]
+	mi := &file_protos_backend_db_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1434,7 +1522,7 @@ func (x *GetWorkResponse) String() string {
 func (*GetWorkResponse) ProtoMessage() {}
 
 func (x *GetWorkResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[26]
+	mi := &file_protos_backend_db_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1447,7 +1535,7 @@ func (x *GetWorkResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWorkResponse.ProtoReflect.Descriptor instead.
 func (*GetWorkResponse) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{26}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *GetWorkResponse) GetData() []*ComputeWork {
@@ -1468,7 +1556,7 @@ type RejectWorkRequest struct {
 
 func (x *RejectWorkRequest) Reset() {
 	*x = RejectWorkRequest{}
-	mi := &file_protos_backend_db_proto_msgTypes[27]
+	mi := &file_protos_backend_db_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1480,7 +1568,7 @@ func (x *RejectWorkRequest) String() string {
 func (*RejectWorkRequest) ProtoMessage() {}
 
 func (x *RejectWorkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[27]
+	mi := &file_protos_backend_db_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1493,7 +1581,7 @@ func (x *RejectWorkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RejectWorkRequest.ProtoReflect.Descriptor instead.
 func (*RejectWorkRequest) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{27}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *RejectWorkRequest) GetId() string {
@@ -1525,7 +1613,7 @@ type RejectWorkResponse struct {
 
 func (x *RejectWorkResponse) Reset() {
 	*x = RejectWorkResponse{}
-	mi := &file_protos_backend_db_proto_msgTypes[28]
+	mi := &file_protos_backend_db_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1537,7 +1625,7 @@ func (x *RejectWorkResponse) String() string {
 func (*RejectWorkResponse) ProtoMessage() {}
 
 func (x *RejectWorkResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[28]
+	mi := &file_protos_backend_db_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1550,7 +1638,7 @@ func (x *RejectWorkResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RejectWorkResponse.ProtoReflect.Descriptor instead.
 func (*RejectWorkResponse) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{28}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{30}
 }
 
 type CompleteWorkRequest struct {
@@ -1563,7 +1651,7 @@ type CompleteWorkRequest struct {
 
 func (x *CompleteWorkRequest) Reset() {
 	*x = CompleteWorkRequest{}
-	mi := &file_protos_backend_db_proto_msgTypes[29]
+	mi := &file_protos_backend_db_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1575,7 +1663,7 @@ func (x *CompleteWorkRequest) String() string {
 func (*CompleteWorkRequest) ProtoMessage() {}
 
 func (x *CompleteWorkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[29]
+	mi := &file_protos_backend_db_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1588,7 +1676,7 @@ func (x *CompleteWorkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CompleteWorkRequest.ProtoReflect.Descriptor instead.
 func (*CompleteWorkRequest) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{29}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *CompleteWorkRequest) GetId() string {
@@ -1614,7 +1702,7 @@ type CompleteWorkResponse struct {
 
 func (x *CompleteWorkResponse) Reset() {
 	*x = CompleteWorkResponse{}
-	mi := &file_protos_backend_db_proto_msgTypes[30]
+	mi := &file_protos_backend_db_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1626,7 +1714,7 @@ func (x *CompleteWorkResponse) String() string {
 func (*CompleteWorkResponse) ProtoMessage() {}
 
 func (x *CompleteWorkResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[30]
+	mi := &file_protos_backend_db_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1639,7 +1727,7 @@ func (x *CompleteWorkResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CompleteWorkResponse.ProtoReflect.Descriptor instead.
 func (*CompleteWorkResponse) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{30}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *CompleteWorkResponse) GetId() string {
@@ -1657,7 +1745,7 @@ type WorkStatusRequest struct {
 
 func (x *WorkStatusRequest) Reset() {
 	*x = WorkStatusRequest{}
-	mi := &file_protos_backend_db_proto_msgTypes[31]
+	mi := &file_protos_backend_db_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1669,7 +1757,7 @@ func (x *WorkStatusRequest) String() string {
 func (*WorkStatusRequest) ProtoMessage() {}
 
 func (x *WorkStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[31]
+	mi := &file_protos_backend_db_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1682,7 +1770,7 @@ func (x *WorkStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WorkStatusRequest.ProtoReflect.Descriptor instead.
 func (*WorkStatusRequest) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{31}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{33}
 }
 
 type WorkStatusResponse struct {
@@ -1695,7 +1783,7 @@ type WorkStatusResponse struct {
 
 func (x *WorkStatusResponse) Reset() {
 	*x = WorkStatusResponse{}
-	mi := &file_protos_backend_db_proto_msgTypes[32]
+	mi := &file_protos_backend_db_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1707,7 +1795,7 @@ func (x *WorkStatusResponse) String() string {
 func (*WorkStatusResponse) ProtoMessage() {}
 
 func (x *WorkStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[32]
+	mi := &file_protos_backend_db_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1720,7 +1808,7 @@ func (x *WorkStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WorkStatusResponse.ProtoReflect.Descriptor instead.
 func (*WorkStatusResponse) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{32}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *WorkStatusResponse) GetTodoCount() int32 {
@@ -1748,7 +1836,7 @@ type ReplaceConfigRequest struct {
 
 func (x *ReplaceConfigRequest) Reset() {
 	*x = ReplaceConfigRequest{}
-	mi := &file_protos_backend_db_proto_msgTypes[33]
+	mi := &file_protos_backend_db_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1760,7 +1848,7 @@ func (x *ReplaceConfigRequest) String() string {
 func (*ReplaceConfigRequest) ProtoMessage() {}
 
 func (x *ReplaceConfigRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[33]
+	mi := &file_protos_backend_db_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1773,7 +1861,7 @@ func (x *ReplaceConfigRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplaceConfigRequest.ProtoReflect.Descriptor instead.
 func (*ReplaceConfigRequest) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{33}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *ReplaceConfigRequest) GetId() string {
@@ -1806,7 +1894,7 @@ type ReplaceConfigResponse struct {
 
 func (x *ReplaceConfigResponse) Reset() {
 	*x = ReplaceConfigResponse{}
-	mi := &file_protos_backend_db_proto_msgTypes[34]
+	mi := &file_protos_backend_db_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1818,7 +1906,7 @@ func (x *ReplaceConfigResponse) String() string {
 func (*ReplaceConfigResponse) ProtoMessage() {}
 
 func (x *ReplaceConfigResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[34]
+	mi := &file_protos_backend_db_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1831,7 +1919,7 @@ func (x *ReplaceConfigResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplaceConfigResponse.ProtoReflect.Descriptor instead.
 func (*ReplaceConfigResponse) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{34}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *ReplaceConfigResponse) GetId() string {
@@ -1852,7 +1940,7 @@ type ReplaceDescRequest struct {
 
 func (x *ReplaceDescRequest) Reset() {
 	*x = ReplaceDescRequest{}
-	mi := &file_protos_backend_db_proto_msgTypes[35]
+	mi := &file_protos_backend_db_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1864,7 +1952,7 @@ func (x *ReplaceDescRequest) String() string {
 func (*ReplaceDescRequest) ProtoMessage() {}
 
 func (x *ReplaceDescRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[35]
+	mi := &file_protos_backend_db_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1877,7 +1965,7 @@ func (x *ReplaceDescRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplaceDescRequest.ProtoReflect.Descriptor instead.
 func (*ReplaceDescRequest) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{35}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *ReplaceDescRequest) GetId() string {
@@ -1910,7 +1998,7 @@ type ReplaceDescResponse struct {
 
 func (x *ReplaceDescResponse) Reset() {
 	*x = ReplaceDescResponse{}
-	mi := &file_protos_backend_db_proto_msgTypes[36]
+	mi := &file_protos_backend_db_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1922,7 +2010,7 @@ func (x *ReplaceDescResponse) String() string {
 func (*ReplaceDescResponse) ProtoMessage() {}
 
 func (x *ReplaceDescResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_protos_backend_db_proto_msgTypes[36]
+	mi := &file_protos_backend_db_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1935,7 +2023,7 @@ func (x *ReplaceDescResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplaceDescResponse.ProtoReflect.Descriptor instead.
 func (*ReplaceDescResponse) Descriptor() ([]byte, []int) {
-	return file_protos_backend_db_proto_rawDescGZIP(), []int{36}
+	return file_protos_backend_db_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *ReplaceDescResponse) GetId() string {
@@ -2014,7 +2102,11 @@ const file_protos_backend_db_proto_rawDesc = "" +
 	"\rGetAllRequest\x12\"\n" +
 	"\x05query\x18\x01 \x01(\v2\f.db.QueryOptR\x05query\"1\n" +
 	"\x0eGetAllResponse\x12\x1f\n" +
-	"\x04data\x18\x01 \x01(\v2\v.db.EntriesR\x04data\"C\n" +
+	"\x04data\x18\x01 \x01(\v2\v.db.EntriesR\x04data\"2\n" +
+	"\fCountRequest\x12\"\n" +
+	"\x05query\x18\x01 \x01(\v2\f.db.QueryOptR\x05query\"%\n" +
+	"\rCountResponse\x12\x14\n" +
+	"\x05count\x18\x01 \x01(\x03R\x05count\"C\n" +
 	"\x11ApproveTagRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1e\n" +
 	"\x03tag\x18\x02 \x01(\x0e2\f.model.DBTagR\x03tag\"$\n" +
@@ -2074,14 +2166,15 @@ const file_protos_backend_db_proto_rawDesc = "" +
 	"source_tag\x18\x03 \x01(\x0e2\f.model.DBTagR\n" +
 	"source_tag\"&\n" +
 	"\x13ReplaceDescResponse\x12\x0f\n" +
-	"\x02id\x18\x01 \x01(\tR\x03_id2\xff\a\n" +
+	"\x02id\x18\x01 \x01(\tR\x03_id2\xaf\b\n" +
 	"\aDBStore\x12(\n" +
 	"\x03Get\x12\x0e.db.GetRequest\x1a\x0f.db.GetResponse\"\x00\x121\n" +
 	"\x06GetAll\x12\x11.db.GetAllRequest\x1a\x12.db.GetAllResponse\"\x00\x121\n" +
 	"\x06GetOne\x12\x11.db.GetOneRequest\x1a\x12.db.GetOneResponse\"\x00\x12=\n" +
 	"\n" +
 	"GetPending\x12\x15.db.GetPendingRequest\x1a\x16.db.GetPendingResponse\"\x00\x12I\n" +
-	"\x0eGetBySubmitter\x12\x19.db.GetBySubmitterRequest\x1a\x1a.db.GetBySubmitterResponse\"\x00\x12=\n" +
+	"\x0eGetBySubmitter\x12\x19.db.GetBySubmitterRequest\x1a\x1a.db.GetBySubmitterResponse\"\x00\x12.\n" +
+	"\x05Count\x12\x10.db.CountRequest\x1a\x11.db.CountResponse\"\x00\x12=\n" +
 	"\n" +
 	"ApproveTag\x12\x15.db.ApproveTagRequest\x1a\x16.db.ApproveTagResponse\"\x00\x12:\n" +
 	"\tRejectTag\x12\x14.db.RejectTagRequest\x1a\x15.db.RejectTagResponse\"\x00\x12a\n" +
@@ -2109,7 +2202,7 @@ func file_protos_backend_db_proto_rawDescGZIP() []byte {
 	return file_protos_backend_db_proto_rawDescData
 }
 
-var file_protos_backend_db_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
+var file_protos_backend_db_proto_msgTypes = make([]protoimpl.MessageInfo, 40)
 var file_protos_backend_db_proto_goTypes = []any{
 	(*Entry)(nil),                          // 0: db.Entry
 	(*EntrySummary)(nil),                   // 1: db.EntrySummary
@@ -2126,104 +2219,109 @@ var file_protos_backend_db_proto_goTypes = []any{
 	(*GetBySubmitterResponse)(nil),         // 12: db.GetBySubmitterResponse
 	(*GetAllRequest)(nil),                  // 13: db.GetAllRequest
 	(*GetAllResponse)(nil),                 // 14: db.GetAllResponse
-	(*ApproveTagRequest)(nil),              // 15: db.ApproveTagRequest
-	(*ApproveTagResponse)(nil),             // 16: db.ApproveTagResponse
-	(*RejectTagRequest)(nil),               // 17: db.RejectTagRequest
-	(*RejectTagResponse)(nil),              // 18: db.RejectTagResponse
-	(*RejectTagAllUnapprovedRequest)(nil),  // 19: db.RejectTagAllUnapprovedRequest
-	(*RejectTagAllUnapprovedResponse)(nil), // 20: db.RejectTagAllUnapprovedResponse
-	(*SubmitRequest)(nil),                  // 21: db.SubmitRequest
-	(*SubmitResponse)(nil),                 // 22: db.SubmitResponse
-	(*DeletePendingRequest)(nil),           // 23: db.DeletePendingRequest
-	(*DeletePendingResponse)(nil),          // 24: db.DeletePendingResponse
-	(*GetWorkRequest)(nil),                 // 25: db.GetWorkRequest
-	(*GetWorkResponse)(nil),                // 26: db.GetWorkResponse
-	(*RejectWorkRequest)(nil),              // 27: db.RejectWorkRequest
-	(*RejectWorkResponse)(nil),             // 28: db.RejectWorkResponse
-	(*CompleteWorkRequest)(nil),            // 29: db.CompleteWorkRequest
-	(*CompleteWorkResponse)(nil),           // 30: db.CompleteWorkResponse
-	(*WorkStatusRequest)(nil),              // 31: db.WorkStatusRequest
-	(*WorkStatusResponse)(nil),             // 32: db.WorkStatusResponse
-	(*ReplaceConfigRequest)(nil),           // 33: db.ReplaceConfigRequest
-	(*ReplaceConfigResponse)(nil),          // 34: db.ReplaceConfigResponse
-	(*ReplaceDescRequest)(nil),             // 35: db.ReplaceDescRequest
-	(*ReplaceDescResponse)(nil),            // 36: db.ReplaceDescResponse
-	nil,                                    // 37: db.EntrySummary.DpsByTargetEntry
-	(model.DBTag)(0),                       // 38: model.DBTag
-	(*model.DescriptiveStats)(nil),         // 39: model.DescriptiveStats
-	(model.SimMode)(0),                     // 40: model.SimMode
-	(*model.Character)(nil),                // 41: model.Character
-	(*structpb.Struct)(nil),                // 42: google.protobuf.Struct
-	(*model.SimulationResult)(nil),         // 43: model.SimulationResult
+	(*CountRequest)(nil),                   // 15: db.CountRequest
+	(*CountResponse)(nil),                  // 16: db.CountResponse
+	(*ApproveTagRequest)(nil),              // 17: db.ApproveTagRequest
+	(*ApproveTagResponse)(nil),             // 18: db.ApproveTagResponse
+	(*RejectTagRequest)(nil),               // 19: db.RejectTagRequest
+	(*RejectTagResponse)(nil),              // 20: db.RejectTagResponse
+	(*RejectTagAllUnapprovedRequest)(nil),  // 21: db.RejectTagAllUnapprovedRequest
+	(*RejectTagAllUnapprovedResponse)(nil), // 22: db.RejectTagAllUnapprovedResponse
+	(*SubmitRequest)(nil),                  // 23: db.SubmitRequest
+	(*SubmitResponse)(nil),                 // 24: db.SubmitResponse
+	(*DeletePendingRequest)(nil),           // 25: db.DeletePendingRequest
+	(*DeletePendingResponse)(nil),          // 26: db.DeletePendingResponse
+	(*GetWorkRequest)(nil),                 // 27: db.GetWorkRequest
+	(*GetWorkResponse)(nil),                // 28: db.GetWorkResponse
+	(*RejectWorkRequest)(nil),              // 29: db.RejectWorkRequest
+	(*RejectWorkResponse)(nil),             // 30: db.RejectWorkResponse
+	(*CompleteWorkRequest)(nil),            // 31: db.CompleteWorkRequest
+	(*CompleteWorkResponse)(nil),           // 32: db.CompleteWorkResponse
+	(*WorkStatusRequest)(nil),              // 33: db.WorkStatusRequest
+	(*WorkStatusResponse)(nil),             // 34: db.WorkStatusResponse
+	(*ReplaceConfigRequest)(nil),           // 35: db.ReplaceConfigRequest
+	(*ReplaceConfigResponse)(nil),          // 36: db.ReplaceConfigResponse
+	(*ReplaceDescRequest)(nil),             // 37: db.ReplaceDescRequest
+	(*ReplaceDescResponse)(nil),            // 38: db.ReplaceDescResponse
+	nil,                                    // 39: db.EntrySummary.DpsByTargetEntry
+	(model.DBTag)(0),                       // 40: model.DBTag
+	(*model.DescriptiveStats)(nil),         // 41: model.DescriptiveStats
+	(model.SimMode)(0),                     // 42: model.SimMode
+	(*model.Character)(nil),                // 43: model.Character
+	(*structpb.Struct)(nil),                // 44: google.protobuf.Struct
+	(*model.SimulationResult)(nil),         // 45: model.SimulationResult
 }
 var file_protos_backend_db_proto_depIdxs = []int32{
-	38, // 0: db.Entry.accepted_tags:type_name -> model.DBTag
-	38, // 1: db.Entry.rejected_tags:type_name -> model.DBTag
+	40, // 0: db.Entry.accepted_tags:type_name -> model.DBTag
+	40, // 1: db.Entry.rejected_tags:type_name -> model.DBTag
 	1,  // 2: db.Entry.summary:type_name -> db.EntrySummary
-	39, // 3: db.EntrySummary.sim_duration:type_name -> model.DescriptiveStats
-	40, // 4: db.EntrySummary.mode:type_name -> model.SimMode
-	39, // 5: db.EntrySummary.total_damage:type_name -> model.DescriptiveStats
-	41, // 6: db.EntrySummary.team:type_name -> model.Character
-	37, // 7: db.EntrySummary.dps_by_target:type_name -> db.EntrySummary.DpsByTargetEntry
+	41, // 3: db.EntrySummary.sim_duration:type_name -> model.DescriptiveStats
+	42, // 4: db.EntrySummary.mode:type_name -> model.SimMode
+	41, // 5: db.EntrySummary.total_damage:type_name -> model.DescriptiveStats
+	43, // 6: db.EntrySummary.team:type_name -> model.Character
+	39, // 7: db.EntrySummary.dps_by_target:type_name -> db.EntrySummary.DpsByTargetEntry
 	0,  // 8: db.Entries.data:type_name -> db.Entry
-	42, // 9: db.QueryOpt.query:type_name -> google.protobuf.Struct
-	42, // 10: db.QueryOpt.sort:type_name -> google.protobuf.Struct
-	42, // 11: db.QueryOpt.project:type_name -> google.protobuf.Struct
+	44, // 9: db.QueryOpt.query:type_name -> google.protobuf.Struct
+	44, // 10: db.QueryOpt.sort:type_name -> google.protobuf.Struct
+	44, // 11: db.QueryOpt.project:type_name -> google.protobuf.Struct
 	3,  // 12: db.GetRequest.query:type_name -> db.QueryOpt
 	2,  // 13: db.GetResponse.data:type_name -> db.Entries
 	0,  // 14: db.GetOneResponse.data:type_name -> db.Entry
-	38, // 15: db.GetPendingRequest.tag:type_name -> model.DBTag
+	40, // 15: db.GetPendingRequest.tag:type_name -> model.DBTag
 	3,  // 16: db.GetPendingRequest.query:type_name -> db.QueryOpt
 	2,  // 17: db.GetPendingResponse.data:type_name -> db.Entries
 	3,  // 18: db.GetBySubmitterRequest.query:type_name -> db.QueryOpt
 	2,  // 19: db.GetBySubmitterResponse.data:type_name -> db.Entries
 	3,  // 20: db.GetAllRequest.query:type_name -> db.QueryOpt
 	2,  // 21: db.GetAllResponse.data:type_name -> db.Entries
-	38, // 22: db.ApproveTagRequest.tag:type_name -> model.DBTag
-	38, // 23: db.RejectTagRequest.tag:type_name -> model.DBTag
-	38, // 24: db.RejectTagAllUnapprovedRequest.tag:type_name -> model.DBTag
-	4,  // 25: db.GetWorkResponse.data:type_name -> db.ComputeWork
-	43, // 26: db.CompleteWorkRequest.result:type_name -> model.SimulationResult
-	38, // 27: db.ReplaceConfigRequest.source_tag:type_name -> model.DBTag
-	38, // 28: db.ReplaceDescRequest.source_tag:type_name -> model.DBTag
-	39, // 29: db.EntrySummary.DpsByTargetEntry.value:type_name -> model.DescriptiveStats
-	5,  // 30: db.DBStore.Get:input_type -> db.GetRequest
-	13, // 31: db.DBStore.GetAll:input_type -> db.GetAllRequest
-	7,  // 32: db.DBStore.GetOne:input_type -> db.GetOneRequest
-	9,  // 33: db.DBStore.GetPending:input_type -> db.GetPendingRequest
-	11, // 34: db.DBStore.GetBySubmitter:input_type -> db.GetBySubmitterRequest
-	15, // 35: db.DBStore.ApproveTag:input_type -> db.ApproveTagRequest
-	17, // 36: db.DBStore.RejectTag:input_type -> db.RejectTagRequest
-	19, // 37: db.DBStore.RejectTagAllUnapproved:input_type -> db.RejectTagAllUnapprovedRequest
-	21, // 38: db.DBStore.Submit:input_type -> db.SubmitRequest
-	23, // 39: db.DBStore.DeletePending:input_type -> db.DeletePendingRequest
-	25, // 40: db.DBStore.GetWork:input_type -> db.GetWorkRequest
-	29, // 41: db.DBStore.CompleteWork:input_type -> db.CompleteWorkRequest
-	27, // 42: db.DBStore.RejectWork:input_type -> db.RejectWorkRequest
-	31, // 43: db.DBStore.WorkStatus:input_type -> db.WorkStatusRequest
-	33, // 44: db.DBStore.ReplaceConfig:input_type -> db.ReplaceConfigRequest
-	35, // 45: db.DBStore.ReplaceDesc:input_type -> db.ReplaceDescRequest
-	6,  // 46: db.DBStore.Get:output_type -> db.GetResponse
-	14, // 47: db.DBStore.GetAll:output_type -> db.GetAllResponse
-	8,  // 48: db.DBStore.GetOne:output_type -> db.GetOneResponse
-	10, // 49: db.DBStore.GetPending:output_type -> db.GetPendingResponse
-	12, // 50: db.DBStore.GetBySubmitter:output_type -> db.GetBySubmitterResponse
-	16, // 51: db.DBStore.ApproveTag:output_type -> db.ApproveTagResponse
-	18, // 52: db.DBStore.RejectTag:output_type -> db.RejectTagResponse
-	20, // 53: db.DBStore.RejectTagAllUnapproved:output_type -> db.RejectTagAllUnapprovedResponse
-	22, // 54: db.DBStore.Submit:output_type -> db.SubmitResponse
-	24, // 55: db.DBStore.DeletePending:output_type -> db.DeletePendingResponse
-	26, // 56: db.DBStore.GetWork:output_type -> db.GetWorkResponse
-	30, // 57: db.DBStore.CompleteWork:output_type -> db.CompleteWorkResponse
-	28, // 58: db.DBStore.RejectWork:output_type -> db.RejectWorkResponse
-	32, // 59: db.DBStore.WorkStatus:output_type -> db.WorkStatusResponse
-	34, // 60: db.DBStore.ReplaceConfig:output_type -> db.ReplaceConfigResponse
-	36, // 61: db.DBStore.ReplaceDesc:output_type -> db.ReplaceDescResponse
-	46, // [46:62] is the sub-list for method output_type
-	30, // [30:46] is the sub-list for method input_type
-	30, // [30:30] is the sub-list for extension type_name
-	30, // [30:30] is the sub-list for extension extendee
-	0,  // [0:30] is the sub-list for field type_name
+	3,  // 22: db.CountRequest.query:type_name -> db.QueryOpt
+	40, // 23: db.ApproveTagRequest.tag:type_name -> model.DBTag
+	40, // 24: db.RejectTagRequest.tag:type_name -> model.DBTag
+	40, // 25: db.RejectTagAllUnapprovedRequest.tag:type_name -> model.DBTag
+	4,  // 26: db.GetWorkResponse.data:type_name -> db.ComputeWork
+	45, // 27: db.CompleteWorkRequest.result:type_name -> model.SimulationResult
+	40, // 28: db.ReplaceConfigRequest.source_tag:type_name -> model.DBTag
+	40, // 29: db.ReplaceDescRequest.source_tag:type_name -> model.DBTag
+	41, // 30: db.EntrySummary.DpsByTargetEntry.value:type_name -> model.DescriptiveStats
+	5,  // 31: db.DBStore.Get:input_type -> db.GetRequest
+	13, // 32: db.DBStore.GetAll:input_type -> db.GetAllRequest
+	7,  // 33: db.DBStore.GetOne:input_type -> db.GetOneRequest
+	9,  // 34: db.DBStore.GetPending:input_type -> db.GetPendingRequest
+	11, // 35: db.DBStore.GetBySubmitter:input_type -> db.GetBySubmitterRequest
+	15, // 36: db.DBStore.Count:input_type -> db.CountRequest
+	17, // 37: db.DBStore.ApproveTag:input_type -> db.ApproveTagRequest
+	19, // 38: db.DBStore.RejectTag:input_type -> db.RejectTagRequest
+	21, // 39: db.DBStore.RejectTagAllUnapproved:input_type -> db.RejectTagAllUnapprovedRequest
+	23, // 40: db.DBStore.Submit:input_type -> db.SubmitRequest
+	25, // 41: db.DBStore.DeletePending:input_type -> db.DeletePendingRequest
+	27, // 42: db.DBStore.GetWork:input_type -> db.GetWorkRequest
+	31, // 43: db.DBStore.CompleteWork:input_type -> db.CompleteWorkRequest
+	29, // 44: db.DBStore.RejectWork:input_type -> db.RejectWorkRequest
+	33, // 45: db.DBStore.WorkStatus:input_type -> db.WorkStatusRequest
+	35, // 46: db.DBStore.ReplaceConfig:input_type -> db.ReplaceConfigRequest
+	37, // 47: db.DBStore.ReplaceDesc:input_type -> db.ReplaceDescRequest
+	6,  // 48: db.DBStore.Get:output_type -> db.GetResponse
+	14, // 49: db.DBStore.GetAll:output_type -> db.GetAllResponse
+	8,  // 50: db.DBStore.GetOne:output_type -> db.GetOneResponse
+	10, // 51: db.DBStore.GetPending:output_type -> db.GetPendingResponse
+	12, // 52: db.DBStore.GetBySubmitter:output_type -> db.GetBySubmitterResponse
+	16, // 53: db.DBStore.Count:output_type -> db.CountResponse
+	18, // 54: db.DBStore.ApproveTag:output_type -> db.ApproveTagResponse
+	20, // 55: db.DBStore.RejectTag:output_type -> db.RejectTagResponse
+	22, // 56: db.DBStore.RejectTagAllUnapproved:output_type -> db.RejectTagAllUnapprovedResponse
+	24, // 57: db.DBStore.Submit:output_type -> db.SubmitResponse
+	26, // 58: db.DBStore.DeletePending:output_type -> db.DeletePendingResponse
+	28, // 59: db.DBStore.GetWork:output_type -> db.GetWorkResponse
+	32, // 60: db.DBStore.CompleteWork:output_type -> db.CompleteWorkResponse
+	30, // 61: db.DBStore.RejectWork:output_type -> db.RejectWorkResponse
+	34, // 62: db.DBStore.WorkStatus:output_type -> db.WorkStatusResponse
+	36, // 63: db.DBStore.ReplaceConfig:output_type -> db.ReplaceConfigResponse
+	38, // 64: db.DBStore.ReplaceDesc:output_type -> db.ReplaceDescResponse
+	48, // [48:65] is the sub-list for method output_type
+	31, // [31:48] is the sub-list for method input_type
+	31, // [31:31] is the sub-list for extension type_name
+	31, // [31:31] is the sub-list for extension extendee
+	0,  // [0:31] is the sub-list for field type_name
 }
 
 func init() { file_protos_backend_db_proto_init() }
@@ -2237,7 +2335,7 @@ func file_protos_backend_db_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_protos_backend_db_proto_rawDesc), len(file_protos_backend_db_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   38,
+			NumMessages:   40,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

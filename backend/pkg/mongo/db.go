@@ -85,6 +85,11 @@ func (s *Server) GetBySubmitter(ctx context.Context, submitter string, opt *db.Q
 	return results, nil
 }
 
+func (s *Server) Count(ctx context.Context, opt *db.QueryOpt) (int64, error) {
+	col := s.client.Database(s.cfg.Database).Collection(s.cfg.ValidView)
+	return s.count(ctx, col, opt.GetQuery().AsMap())
+}
+
 func findOptFromQueryOpt(q *db.QueryOpt) *options.FindOptions {
 	opt := options.Find()
 	opt.Projection = q.GetProject().AsMap()

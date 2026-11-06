@@ -122,7 +122,7 @@
 		"total_dps": "合計DPS: ",
 		"type_to_search": "ここに入力して検索...",
 		"weapon": "武器",
-		"showing_simulations": "{{i}}のシミュレーションを表示中",
+		"showing_simulations": "{{total}}件中{{i}}件のシミュレーションを表示中",
 		"simMode": "シミュレーションモード",
 		"targetCount": "ターゲット数",
 		"dpsPerTarget": "ターゲット1体あたりのDPS",

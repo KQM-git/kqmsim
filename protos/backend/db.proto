@@ -15,6 +15,9 @@ service DBStore {
     rpc GetPending (GetPendingRequest) returns (GetPendingResponse) {}
     rpc GetBySubmitter (GetBySubmitterRequest) returns (GetBySubmitterResponse) {}
 
+    //gets total entry count for a given query
+    rpc Count (CountRequest) returns (CountResponse) {}
+
     //tagging
     rpc ApproveTag(ApproveTagRequest) returns (ApproveTagResponse) {}
     rpc RejectTag(RejectTagRequest) returns (RejectTagResponse) {}
@@ -132,6 +135,14 @@ message GetAllRequest {
 
 message GetAllResponse {
     Entries data = 1;
+}
+
+message CountRequest {
+    QueryOpt query = 1;
+}
+
+message CountResponse {
+    int64 count = 1;
 }
 
 //tagging related

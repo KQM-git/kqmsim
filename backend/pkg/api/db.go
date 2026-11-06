@@ -19,6 +19,7 @@ type dbGetOpt struct {
 	Project map[string]any `json:"project"`
 	Skip    int64          `json:"skip"`
 	Limit   int64          `json:"limit"`
+	Count   bool           `json:"count"`
 }
 
 func marshalOptions() protojson.MarshalOptions {
@@ -87,7 +88,33 @@ func (s *Server) getDB() http.HandlerFunc {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		data, err := marshalOptions().Marshal(res.GetData())
+		var count *int64
+		if o.Count {
+			c, err := s.dbClient.Count(r.Context(), &db.CountRequest{Query: opt})
+			if err != nil {
+				s.Log.Warnw("error counting db", "err", err)
+				http.Error(w, "internal server error", http.StatusInternalServerError)
+				return
+			}
+			n := c.GetCount()
+			count = &n
+		}
+
+		entries := make([]json.RawMessage, 0, len(res.GetData().GetData()))
+		for _, e := range res.GetData().GetData() {
+			b, err := marshalOptions().Marshal(e)
+			if err != nil {
+				s.Log.Warnw("error query db - cannot marshal entry", "err", err)
+				http.Error(w, "internal server error", http.StatusInternalServerError)
+				return
+			}
+			entries = append(entries, b)
+		}
+
+		data, err := json.Marshal(struct {
+			Data  []json.RawMessage `json:"data"`
+			Count *int64            `json:"count,omitempty"`
+		}{entries, count})
 		if err != nil {
 			s.Log.Warnw("error query db - cannot marshal result", "err", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)

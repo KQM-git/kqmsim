@@ -122,7 +122,7 @@
 		"total_dps": "총합 DPS: ",
 		"type_to_search": "여기 입력하여 검색하기...",
 		"weapon": "무기",
-		"showing_simulations": "{{i}}개의 시뮬레이션을 표시합니다",
+		"showing_simulations": "{{total}}개 중 {{i}}개의 시뮬레이션을 표시합니다",
 		"simMode": "심 모드",
 		"targetCount": "타겟 수",
 		"dpsPerTarget": "타겟 당 DPS",

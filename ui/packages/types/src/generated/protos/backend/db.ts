@@ -121,6 +121,14 @@ export interface GetAllResponse {
   data?: Entries | undefined;
 }
 
+export interface CountRequest {
+  query?: QueryOpt | undefined;
+}
+
+export interface CountResponse {
+  count?: number | undefined;
+}
+
 export interface ApproveTagRequest {
   id?: string | undefined;
   tag?: DBTag | undefined;
@@ -1859,6 +1867,142 @@ export const GetAllResponse: MessageFns<GetAllResponse> = {
   },
 };
 
+function createBaseCountRequest(): CountRequest {
+  return { query: undefined };
+}
+
+export const CountRequest: MessageFns<CountRequest> = {
+  encode(message: CountRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.query !== undefined) {
+      QueryOpt.encode(message.query, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CountRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const previousRecursionDepth = (reader as any).__tsProtoDecodeDepth ?? 0;
+    if (previousRecursionDepth >= 100) {
+      throw new globalThis.Error("protobuf decode recursion limit exceeded");
+    }
+    (reader as any).__tsProtoDecodeDepth = previousRecursionDepth + 1;
+    try {
+      const end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseCountRequest();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            if (tag !== 10) {
+              break;
+            }
+
+            message.query = QueryOpt.decode(reader, reader.uint32());
+            continue;
+          }
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    } finally {
+      (reader as any).__tsProtoDecodeDepth = previousRecursionDepth;
+    }
+  },
+
+  fromJSON(object: any): CountRequest {
+    return { query: isSet(object.query) ? QueryOpt.fromJSON(object.query) : undefined };
+  },
+
+  toJSON(message: CountRequest): unknown {
+    const obj: any = {};
+    if (message.query !== undefined) {
+      obj.query = QueryOpt.toJSON(message.query);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CountRequest>, I>>(base?: I): CountRequest {
+    return CountRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CountRequest>, I>>(object: I): CountRequest {
+    const message = createBaseCountRequest();
+    message.query = (object.query !== undefined && object.query !== null)
+      ? QueryOpt.fromPartial(object.query)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseCountResponse(): CountResponse {
+  return { count: 0 };
+}
+
+export const CountResponse: MessageFns<CountResponse> = {
+  encode(message: CountResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.count !== undefined && message.count !== 0) {
+      writer.uint32(8).int64(message.count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const previousRecursionDepth = (reader as any).__tsProtoDecodeDepth ?? 0;
+    if (previousRecursionDepth >= 100) {
+      throw new globalThis.Error("protobuf decode recursion limit exceeded");
+    }
+    (reader as any).__tsProtoDecodeDepth = previousRecursionDepth + 1;
+    try {
+      const end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseCountResponse();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            if (tag !== 8) {
+              break;
+            }
+
+            message.count = longToNumber(reader.int64());
+            continue;
+          }
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    } finally {
+      (reader as any).__tsProtoDecodeDepth = previousRecursionDepth;
+    }
+  },
+
+  fromJSON(object: any): CountResponse {
+    return { count: isSet(object.count) ? globalThis.Number(object.count) : 0 };
+  },
+
+  toJSON(message: CountResponse): unknown {
+    const obj: any = {};
+    if (message.count !== undefined && message.count !== 0) {
+      obj.count = Math.round(message.count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CountResponse>, I>>(base?: I): CountResponse {
+    return CountResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CountResponse>, I>>(object: I): CountResponse {
+    const message = createBaseCountResponse();
+    message.count = object.count ?? 0;
+    return message;
+  },
+};
+
 function createBaseApproveTagRequest(): ApproveTagRequest {
   return { id: "", tag: 0 };
 }
@@ -3542,6 +3686,8 @@ export interface DBStore {
   GetOne(request: GetOneRequest): Promise<GetOneResponse>;
   GetPending(request: GetPendingRequest): Promise<GetPendingResponse>;
   GetBySubmitter(request: GetBySubmitterRequest): Promise<GetBySubmitterResponse>;
+  /** gets total entry count for a given query */
+  Count(request: CountRequest): Promise<CountResponse>;
   /** tagging */
   ApproveTag(request: ApproveTagRequest): Promise<ApproveTagResponse>;
   RejectTag(request: RejectTagRequest): Promise<RejectTagResponse>;
@@ -3571,6 +3717,7 @@ export class DBStoreClientImpl implements DBStore {
     this.GetOne = this.GetOne.bind(this);
     this.GetPending = this.GetPending.bind(this);
     this.GetBySubmitter = this.GetBySubmitter.bind(this);
+    this.Count = this.Count.bind(this);
     this.ApproveTag = this.ApproveTag.bind(this);
     this.RejectTag = this.RejectTag.bind(this);
     this.RejectTagAllUnapproved = this.RejectTagAllUnapproved.bind(this);
@@ -3611,6 +3758,12 @@ export class DBStoreClientImpl implements DBStore {
     const data = GetBySubmitterRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetBySubmitter", data);
     return promise.then((data) => GetBySubmitterResponse.decode(new BinaryReader(data)));
+  }
+
+  Count(request: CountRequest): Promise<CountResponse> {
+    const data = CountRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "Count", data);
+    return promise.then((data) => CountResponse.decode(new BinaryReader(data)));
   }
 
   ApproveTag(request: ApproveTagRequest): Promise<ApproveTagResponse> {

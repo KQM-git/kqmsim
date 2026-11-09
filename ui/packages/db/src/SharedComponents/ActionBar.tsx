@@ -13,7 +13,13 @@ import {
 	tagBaseState,
 } from "./FilterComponents/Filter.utils";
 
-export function ActionBar({ simCount }: { simCount: number | null }) {
+export function ActionBar({
+	simCount,
+	totalCount,
+}: {
+	simCount: number | null;
+	totalCount: number;
+}) {
 	const { t } = useTranslation();
 
 	return (
@@ -22,7 +28,7 @@ export function ActionBar({ simCount }: { simCount: number | null }) {
 				<Filter />
 				<CustomFilterSearch />
 				<span className="ml-auto whitespace-nowrap font-g-mono text-g-sm text-g-ink-dim">
-					{t("db.showing_simulations", { i: simCount ?? 0 })}
+					{t("db.showing_simulations", { i: simCount ?? 0, total: totalCount })}
 				</span>
 			</div>
 			<ActiveFilterChips />

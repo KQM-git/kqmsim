@@ -20,7 +20,8 @@ export const Database = ({ initialFilter = defaultFilter }: Props) => {
 	const [filter, dispatch] = useReducer(filterReducer, initialFilter);
 	const [data, setData] = useState<db.Entry[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [hasMore, setHasMore] = useState<boolean>(true);
+	const [totalCount, setTotalCount] = useState<number>(0);
+	const hasMore = data.length < totalCount;
 	const [page, setPage] = useState<number>(1);
 	const abortController = useRef(new AbortController());
 
@@ -43,26 +44,17 @@ export const Database = ({ initialFilter = defaultFilter }: Props) => {
 			axios(`/api/db?q=${encodeURIComponent(JSON.stringify(query))}`, {
 				signal: abortController.current.signal,
 			})
-				.then((resp: { data: db.Entries }) => {
+				.then((resp: { data: { data: db.Entry[]; count?: number } }) => {
 					if (resp.data && resp.data.data) {
 						setPage(nextPage);
-						setHasMore(true);
 						if (append) {
 							appendData(resp.data.data);
 						} else {
 							setData(resp.data.data);
+							setTotalCount(resp.data.count ?? 0);
 						}
-						//check count; if we got less than limit then there's no more data...
-						//TODO: this is bugged if there are exactly limit number of entries...
-						//TODO: really server should tell us if there's more data
-						if (resp.data.data.length < query.limit) {
-							setHasMore(false);
-						}
-					} else {
-						setHasMore(false);
-						if (!append) {
-							setData([]);
-						}
+					} else if (!append) {
+						setData([]);
 					}
 					setIsLoading(false);
 				})
@@ -76,13 +68,13 @@ export const Database = ({ initialFilter = defaultFilter }: Props) => {
 	useEffect(() => {
 		abortController.current.abort();
 		abortController.current = new AbortController();
-		const query = craftQuery(filter, 1, 25);
+		const query = craftQuery(filter, 1, 25, true);
 		querydb(query, 1, false);
 	}, [filter, querydb]);
 
 	const fetchData = () => {
 		const nextPage = page + 1;
-		const query = craftQuery(filter, nextPage, 25);
+		const query = craftQuery(filter, nextPage, 25, false);
 		querydb(query, nextPage, true);
 	};
 
@@ -96,7 +88,12 @@ export const Database = ({ initialFilter = defaultFilter }: Props) => {
 	return (
 		<FilterContext.Provider value={filter}>
 			<FilterDispatchContext.Provider value={dispatch}>
-				<DBView data={data} fetchData={fetchData} hasMore={hasMore} />
+				<DBView
+					data={data}
+					fetchData={fetchData}
+					totalCount={totalCount}
+					hasMore={hasMore}
+				/>
 			</FilterDispatchContext.Provider>
 		</FilterContext.Provider>
 	);

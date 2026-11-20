@@ -122,7 +122,7 @@
 		"total_dps": "Общий DPS: ",
 		"type_to_search": "Введите для поиска...",
 		"weapon": "Оружие",
-		"showing_simulations": "Показано {{i}} симуляций",
+		"showing_simulations": "Показано {{i}} из {{total}} симуляций",
 		"simMode": "Режим симуляции",
 		"targetCount": "Количество целей",
 		"dpsPerTarget": "DPS на цель",

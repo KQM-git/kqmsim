@@ -29,6 +29,7 @@ type Service interface {
 	GetAllEntriesWithoutTag(ctx context.Context, tag model.DBTag, query *QueryOpt) ([]*Entry, error)
 	GetBySubmitter(context.Context, string, *QueryOpt) ([]*Entry, error)
 	Delete(context.Context, string) error
+	Count(ctx context.Context, query *QueryOpt) (int64, error)
 }
 
 type TaggingService interface {

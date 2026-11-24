@@ -103,6 +103,23 @@ func (s *Server) get(
 	return result, nil
 }
 
+func (s *Server) count(
+	ctx context.Context,
+	col *mongo.Collection,
+	filter any,
+) (int64, error) {
+	s.Log.Infow("db count request", "filter", filter)
+
+	result, err := col.CountDocuments(ctx, filter)
+	if err != nil {
+		s.Log.Infow("error querying", "err", err)
+		return 0, status.Error(codes.Internal, "unexpected server error")
+	}
+	s.Log.Infow("mongodb: count request done", "count", result)
+
+	return result, nil
+}
+
 func (s *Server) aggregate(ctx context.Context, col *mongo.Collection, pipeline any, opts ...*options.AggregateOptions) ([]*db.Entry, error) {
 	cursor, err := col.Aggregate(ctx, pipeline, opts...)
 	if err != nil {

@@ -122,7 +122,7 @@
 		"total_dps": "Total DPS: ",
 		"type_to_search": "Type to search...",
 		"weapon": "Weapon",
-		"showing_simulations": "Showing {{i}} simulations",
+		"showing_simulations": "Showing {{i}} simulations of {{total}}",
 		"simMode": "Mode",
 		"targetCount": "Target Count",
 		"dpsPerTarget": "DPS per Target",

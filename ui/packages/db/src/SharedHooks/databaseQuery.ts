@@ -8,6 +8,7 @@ export function craftQuery(
 	filter: FilterState,
 	pageNumber: number,
 	entriesPerPage: number,
+	count?: boolean, // whether or not to return the total count of the query
 ): DbQuery {
 	const query: DbQuery["query"] = {};
 	const limit = entriesPerPage;
@@ -47,6 +48,7 @@ export function craftQuery(
 			limit,
 			skip,
 			sort,
+			count,
 		};
 	}
 
@@ -176,6 +178,7 @@ export function craftQuery(
 		limit,
 		skip,
 		sort,
+		count,
 	};
 }
 
@@ -213,4 +216,5 @@ export interface DbQuery {
 		[key: string]: 1 | -1;
 	};
 	skip?: number;
+	count?: boolean;
 }
